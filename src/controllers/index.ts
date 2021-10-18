@@ -13,3 +13,6 @@ export * from './invitacion-evaluar-jurado.controller';
 export * from './invitacion-evaluar-solicitud.controller';
 export * from './recordatorio-invitacion-evaluar.controller';
 export * from './resultado-evaluacion-invitacion-evaluar.controller';
+export * from './facultad.controller';
+export * from './departamento.controller';
+export * from './comite.controller';

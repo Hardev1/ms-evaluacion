@@ -16,3 +16,5 @@ export * from './proponente-departamento.model';
 export * from './solicitud-proponente.model';
 export * from './jurado-linea-investigacion.model';
 export * from './solicitud-comite.model';
+export * from './notificacion-sms.model';
+export * from './notificacion-correo.model';

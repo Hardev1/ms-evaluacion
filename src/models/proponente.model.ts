@@ -3,7 +3,19 @@ import {Solicitud} from './solicitud.model';
 import {SolicitudProponente} from './solicitud-proponente.model';
 import {TipoVinculacion} from './tipo-vinculacion.model';
 
-@model()
+@model({
+  settings: {
+    foreignKeys: {
+      fk_tipoVinculacion_IdTipoVinculacion: {
+        name: 'fk_tipoVinculacion_IdTipoVinculacion',
+        entity: 'TipoVinculacion',
+        entityKey: 'id',
+        foreignKey: 'IdTipoVinculacion',
+      }
+    },
+  },
+},)
+
 export class Proponente extends Entity {
   @property({
     type: 'number',
@@ -20,9 +32,9 @@ export class Proponente extends Entity {
 
   @property({
     type: 'string',
-    required: true,
+    required: false,
   })
-  otros_nombres: string;
+  otros_nombres?: string;
 
   @property({
     type: 'string',

@@ -4,7 +4,37 @@ import {EstadoSolicitud} from './estado-solicitud.model';
 import {Modalidad} from './modalidad.model';
 import {LineaInvestigacion} from './linea-investigacion.model';
 
-@model()
+@model({
+  settings: {
+    foreignKeys: {
+      fk_lineaInvestigacion_IdLineaInvestigacion: {
+        name: 'fk_lineaInvestigacion_IdLineaInvestigacion',
+        entity: 'LineaInvestigacion',
+        entityKey: 'id',
+        foreignKey: 'IdLineaInvestigacion',
+      },
+      fk_solicitud_IdSolicitud: {
+        name: 'fk_solicitud_IdSolicitud',
+        entity: 'solicitud',
+        entityKey: 'id',
+        foreignKey: 'IdSolicitud',
+      },
+      fk_modalidad_IdModalidad: {
+        name: 'fk_modalidad_IdModalidad',
+        entity: 'Modalidad',
+        entityKey: 'id',
+        foreignKey: 'IdModalidad',
+      },
+      fk_estadoSolicitud_IdEstadoSolicitud: {
+        name: 'fk_estadoSolicitud_IdEstadoSolicitud',
+        entity: 'EstadoSolicitud',
+        entityKey: 'id',
+        foreignKey: 'IdEstadoSolicitud',
+      }
+    },
+  },
+},)
+
 export class Solicitud extends Entity {
   @property({
     type: 'number',
