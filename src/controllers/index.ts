@@ -16,3 +16,8 @@ export * from './resultado-evaluacion-invitacion-evaluar.controller';
 export * from './facultad.controller';
 export * from './departamento.controller';
 export * from './comite.controller';
+export * from './jurado.controller';
+export * from './jurado-linea-investigacion.controller';
+export * from './invitacion-evaluar.controller';
+export * from './recordatorio.controller';
+export * from './resultado-evaluacion.controller';

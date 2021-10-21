@@ -1,26 +1,25 @@
-import {Entity, model, property, belongsTo} from '@loopback/repository';
+import {belongsTo, Entity, model, property} from '@loopback/repository';
 import {Jurado} from './jurado.model';
 import {Solicitud} from './solicitud.model';
 
 @model({
   settings: {
     foreignKeys: {
-      fk_solicitud_IdSolicitud: {
-        name: 'fk_solicitud_IdSolicitud',
+      fk_solicitud_id_solicitud: {
+        name: 'fk_solicitud_id_solicitud',
         entity: 'solicitud',
         entityKey: 'id',
-        foreignKey: 'IdSolicitud',
+        foreignKey: 'id_solicitud',
       },
       fk_jurado_IdJurado: {
         name: 'fk_jurado_IdJurado',
-        entity: 'Jurado',
+        entity: 'jurado',
         entityKey: 'id',
-        foreignKey: 'IdJurado',
-      }
+        foreignKey: 'id_jurado',
+      },
     },
   },
-},)
-
+})
 export class InvitacionEvaluar extends Entity {
   @property({
     type: 'number',
@@ -68,4 +67,5 @@ export interface InvitacionEvaluarRelations {
   // describe navigational properties here
 }
 
-export type InvitacionEvaluarWithRelations = InvitacionEvaluar & InvitacionEvaluarRelations;
+export type InvitacionEvaluarWithRelations = InvitacionEvaluar &
+  InvitacionEvaluarRelations;

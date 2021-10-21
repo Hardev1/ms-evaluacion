@@ -1,21 +1,26 @@
-import {Entity, model, property, hasMany, belongsTo} from '@loopback/repository';
-import {Solicitud} from './solicitud.model';
+import {
+  belongsTo,
+  Entity,
+  hasMany,
+  model,
+  property,
+} from '@loopback/repository';
 import {SolicitudProponente} from './solicitud-proponente.model';
+import {Solicitud} from './solicitud.model';
 import {TipoVinculacion} from './tipo-vinculacion.model';
 
 @model({
   settings: {
     foreignKeys: {
-      fk_tipoVinculacion_IdTipoVinculacion: {
-        name: 'fk_tipoVinculacion_IdTipoVinculacion',
-        entity: 'TipoVinculacion',
+      fk_tipoVinculacion_id_tipo_vinculacion: {
+        name: 'fk_tipoVinculacion_id_tipo_vinculacion',
+        entity: 'tipovinculacion',
         entityKey: 'id',
-        foreignKey: 'IdTipoVinculacion',
-      }
+        foreignKey: 'id_tipo_vinculacion',
+      },
     },
   },
-},)
-
+})
 export class Proponente extends Entity {
   @property({
     type: 'number',
@@ -79,7 +84,13 @@ export class Proponente extends Entity {
   })
   fotografia: string[];
 
-  @hasMany(() => Solicitud, {through: {model: () => SolicitudProponente, keyFrom: 'id_proponente', keyTo: 'id_solicitud'}})
+  @hasMany(() => Solicitud, {
+    through: {
+      model: () => SolicitudProponente,
+      keyFrom: 'id_proponente',
+      keyTo: 'id_solicitud',
+    },
+  })
   tiene_muchas: Solicitud[];
 
   @belongsTo(() => TipoVinculacion, {name: 'tiene_un'})

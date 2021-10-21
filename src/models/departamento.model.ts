@@ -1,22 +1,26 @@
-import {Entity, model, property, belongsTo, hasMany} from '@loopback/repository';
+import {
+  belongsTo,
+  Entity,
+  hasMany,
+  model,
+  property,
+} from '@loopback/repository';
 import {Facultad} from './facultad.model';
-import {Proponente} from './proponente.model';
 import {ProponenteDepartamento} from './proponente-departamento.model';
+import {Proponente} from './proponente.model';
 
 @model({
   settings: {
     foreignKeys: {
-      fk_facultad_IdFacultad: {
-        name: 'fk_facultad_idFacultad',
+      fk_facultad_id_facultad: {
+        name: 'fk_facultad_id_facultad',
         entity: 'Facultad',
         entityKey: 'id',
-        foreignKey: 'idFacultad',
-      }
+        foreignKey: 'id_facultad',
+      },
     },
   },
-},
-)
-
+})
 export class Departamento extends Entity {
   @property({
     type: 'number',
@@ -34,7 +38,13 @@ export class Departamento extends Entity {
   @belongsTo(() => Facultad, {name: 'pertenece_a'})
   id_facultad: number;
 
-  @hasMany(() => Proponente, {through: {model: () => ProponenteDepartamento, keyFrom: 'id_departamento', keyTo: 'id_proponente'}})
+  @hasMany(() => Proponente, {
+    through: {
+      model: () => ProponenteDepartamento,
+      keyFrom: 'id_departamento',
+      keyTo: 'id_proponente',
+    },
+  })
   tienen_muchos: Proponente[];
 
   constructor(data?: Partial<Departamento>) {

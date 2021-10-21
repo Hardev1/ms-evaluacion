@@ -3,22 +3,21 @@ import {Entity, model, property} from '@loopback/repository';
 @model({
   settings: {
     foreignKeys: {
-      fk_solicitud_IdSolicitud: {
-        name: 'fk_solicitud_IdSolicitud',
+      fk_solicitud_id_solicitud: {
+        name: 'fk_solicitud_id_solicitud',
         entity: 'solicitud',
         entityKey: 'id',
-        foreignKey: 'IdSolicitud',
+        foreignKey: 'id_solicitud',
       },
-      fk_comite_IdComite: {
-        name: 'fk_comite_IdComite',
+      fk_comite_id_comite: {
+        name: 'fk_comite_id_comite',
         entity: 'Comite',
         entityKey: 'id',
-        foreignKey: 'IdComite',
-      }
+        foreignKey: 'id_comite',
+      },
     },
   },
-},)
-
+})
 export class SolicitudComite extends Entity {
   @property({
     type: 'number',
@@ -46,4 +45,5 @@ export interface SolicitudComiteRelations {
   // describe navigational properties here
 }
 
-export type SolicitudComiteWithRelations = SolicitudComite & SolicitudComiteRelations;
+export type SolicitudComiteWithRelations = SolicitudComite &
+  SolicitudComiteRelations;

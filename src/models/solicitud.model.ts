@@ -1,40 +1,39 @@
-import {Entity, model, property, belongsTo} from '@loopback/repository';
-import {TipoSolicitud} from './tipo-solicitud.model';
+import {belongsTo, Entity, model, property} from '@loopback/repository';
 import {EstadoSolicitud} from './estado-solicitud.model';
-import {Modalidad} from './modalidad.model';
 import {LineaInvestigacion} from './linea-investigacion.model';
+import {Modalidad} from './modalidad.model';
+import {TipoSolicitud} from './tipo-solicitud.model';
 
 @model({
   settings: {
     foreignKeys: {
-      fk_lineaInvestigacion_IdLineaInvestigacion: {
+      fk_lineaInvestigacion_id_linea_investigacion: {
         name: 'fk_lineaInvestigacion_IdLineaInvestigacion',
-        entity: 'LineaInvestigacion',
+        entity: 'lineainvestigacion',
         entityKey: 'id',
-        foreignKey: 'IdLineaInvestigacion',
+        foreignKey: 'id_linea_investigacion',
       },
-      fk_solicitud_IdSolicitud: {
-        name: 'fk_solicitud_IdSolicitud',
-        entity: 'solicitud',
+      fk_tipoSolicitud_id_tipo_solicitud: {
+        name: 'fk_tipoSolicitud_id_tipo_solicitud',
+        entity: 'TipoSolicitud',
         entityKey: 'id',
-        foreignKey: 'IdSolicitud',
+        foreignKey: 'id_tipo_solicitud',
       },
-      fk_modalidad_IdModalidad: {
+      fk_modalidad_id_modalidad: {
         name: 'fk_modalidad_IdModalidad',
         entity: 'Modalidad',
         entityKey: 'id',
-        foreignKey: 'IdModalidad',
+        foreignKey: 'id_modalidad',
       },
-      fk_estadoSolicitud_IdEstadoSolicitud: {
+      fk_estadoSolicitud_id_estado_solicitud: {
         name: 'fk_estadoSolicitud_IdEstadoSolicitud',
         entity: 'EstadoSolicitud',
         entityKey: 'id',
-        foreignKey: 'IdEstadoSolicitud',
-      }
+        foreignKey: 'id_estado_solicitud',
+      },
     },
   },
-},)
-
+})
 export class Solicitud extends Entity {
   @property({
     type: 'number',

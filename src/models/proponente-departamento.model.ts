@@ -3,23 +3,21 @@ import {Entity, model, property} from '@loopback/repository';
 @model({
   settings: {
     foreignKeys: {
-      fk_proponente_IdDepartamento: {
-        name: 'fk_proponente_idDepartamento',
-        entity: 'Departamento',
+      fk_departamento_id_departamento: {
+        name: 'fk_departamento_id_departamento',
+        entity: 'departamento',
         entityKey: 'id',
-        foreignKey: 'idDepartamento',
+        foreignKey: 'id_departamento',
       },
-      fk_proponente_IdProponente: {
-        name: 'fk_proponente_idProponente',
-        entity: 'Proponente',
+      fk_proponente_id_proponente: {
+        name: 'fk_proponente_id_proponente',
+        entity: 'proponente',
         entityKey: 'id',
-        foreignKey: 'idProponente',
-      }
+        foreignKey: 'id_proponente',
+      },
     },
   },
-},
-)
-
+})
 export class ProponenteDepartamento extends Entity {
   @property({
     type: 'number',
@@ -47,4 +45,5 @@ export interface ProponenteDepartamentoRelations {
   // describe navigational properties here
 }
 
-export type ProponenteDepartamentoWithRelations = ProponenteDepartamento & ProponenteDepartamentoRelations;
+export type ProponenteDepartamentoWithRelations = ProponenteDepartamento &
+  ProponenteDepartamentoRelations;
