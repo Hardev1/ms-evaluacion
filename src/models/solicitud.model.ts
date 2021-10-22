@@ -9,7 +9,7 @@ import {TipoSolicitud} from './tipo-solicitud.model';
     foreignKeys: {
       fk_lineaInvestigacion_id_linea_investigacion: {
         name: 'fk_lineaInvestigacion_IdLineaInvestigacion',
-        entity: 'lineainvestigacion',
+        entity: 'LineaInvestigacion',
         entityKey: 'id',
         foreignKey: 'id_linea_investigacion',
       },

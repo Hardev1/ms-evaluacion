@@ -11,7 +11,7 @@ import {Entity, model, property} from '@loopback/repository';
       },
       fk_solicitud_id_solicitud: {
         name: 'fk_solicitud_id_solicitud',
-        entity: 'solicitud',
+        entity: 'Solicitud',
         entityKey: 'id',
         foreignKey: 'id_solicitud',
       },

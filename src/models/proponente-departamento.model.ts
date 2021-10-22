@@ -3,15 +3,15 @@ import {Entity, model, property} from '@loopback/repository';
 @model({
   settings: {
     foreignKeys: {
-      fk_departamento_id_departamento: {
-        name: 'fk_departamento_id_departamento',
-        entity: 'departamento',
+      fk_departamento_id_departamento_intermedia: {
+        name: 'fk_departamento_id_departamento_intermedia',
+        entity: 'Departamento',
         entityKey: 'id',
         foreignKey: 'id_departamento',
       },
-      fk_proponente_id_proponente: {
-        name: 'fk_proponente_id_proponente',
-        entity: 'proponente',
+      fk_proponente_id_proponente_intermedia: {
+        name: 'fk_proponente_id_proponente_intermedia',
+        entity: 'Proponente',
         entityKey: 'id',
         foreignKey: 'id_proponente',
       },

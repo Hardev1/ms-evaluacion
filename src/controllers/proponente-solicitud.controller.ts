@@ -17,7 +17,7 @@ import {
   requestBody,
 } from '@loopback/rest';
 import {Configuracion} from '../llaves/config';
-import {Proponente, Solicitud, NotificacionCorreo} from '../models';
+import {NotificacionCorreo, Proponente, Solicitud} from '../models';
 import {
   ProponenteRepository,
   SolicitudProponenteRepository,

@@ -5,17 +5,17 @@ import {Solicitud} from './solicitud.model';
 @model({
   settings: {
     foreignKeys: {
-      fk_solicitud_id_solicitud: {
-        name: 'fk_solicitud_id_solicitud',
-        entity: 'solicitud',
-        entityKey: 'id',
-        foreignKey: 'id_solicitud',
-      },
-      fk_jurado_IdJurado: {
-        name: 'fk_jurado_IdJurado',
-        entity: 'jurado',
+      fk_jurado_id_jurado_invitacion: {
+        name: 'fk_jurado_id_jurado_invitacion',
+        entity: 'Jurado',
         entityKey: 'id',
         foreignKey: 'id_jurado',
+      },
+      fk_solicitud_id_solicitud_invitacion: {
+        name: 'fk_solicitud_id_solicitud_invitacion',
+        entity: 'Solicitud',
+        entityKey: 'id',
+        foreignKey: 'id_solicitud',
       },
     },
   },

@@ -3,17 +3,17 @@ import {Entity, model, property} from '@loopback/repository';
 @model({
   settings: {
     foreignKeys: {
-      fk_solicitud_id_solicitud: {
-        name: 'fk_solicitud_id_solicitud',
-        entity: 'solicitud',
-        entityKey: 'id',
-        foreignKey: 'id_solicitud',
-      },
-      fk_comite_id_comite: {
-        name: 'fk_comite_id_comite',
+      fk_comite_id_comite_intermedia: {
+        name: 'fk_comite_id_comite_intermedia',
         entity: 'Comite',
         entityKey: 'id',
         foreignKey: 'id_comite',
+      },
+      fk_solicitud_id_solicitud_intermedia: {
+        name: 'fk_solicitud_id_solicitud_intermedia',
+        entity: 'Solicitud',
+        entityKey: 'id',
+        foreignKey: 'id_solicitud',
       },
     },
   },

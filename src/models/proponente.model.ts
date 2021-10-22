@@ -14,7 +14,7 @@ import {TipoVinculacion} from './tipo-vinculacion.model';
     foreignKeys: {
       fk_tipoVinculacion_id_tipo_vinculacion: {
         name: 'fk_tipoVinculacion_id_tipo_vinculacion',
-        entity: 'tipovinculacion',
+        entity: 'TipoVinculacion',
         entityKey: 'id',
         foreignKey: 'id_tipo_vinculacion',
       },

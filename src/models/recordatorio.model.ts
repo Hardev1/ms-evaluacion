@@ -4,9 +4,9 @@ import {InvitacionEvaluar} from './invitacion-evaluar.model';
 @model({
   settings: {
     foreignKeys: {
-      fk_invitacionEvaluar_id_invitacion_evaluar: {
-        name: 'fk_invitacionEvaluar_id_invitacion_evaluar',
-        entity: 'invitacionEvaluar',
+      fk_invitacionEvaluar_id_invitacion_evaluar_recordatorio: {
+        name: 'fk_invitacionEvaluar_id_invitacion_evaluar_recordatorio',
+        entity: 'InvitacionEvaluar',
         entityKey: 'id',
         foreignKey: 'id_invitacion_evaluar',
       },
