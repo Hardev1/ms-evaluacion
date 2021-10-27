@@ -17,10 +17,16 @@ import {
   requestBody,
 } from '@loopback/rest';
 import {Configuracion} from '../llaves/config';
-import {NotificacionCorreo, Proponente, Solicitud} from '../models';
+import {
+  NotificacionCorreo,
+  Proponente,
+  Solicitud,
+  SolicitudProponente,
+} from '../models';
 import {
   ProponenteRepository,
   SolicitudProponenteRepository,
+  SolicitudRepository,
 } from '../repositories';
 import {NotificacionesService} from '../services';
 
@@ -30,6 +36,8 @@ export class ProponenteSolicitudController {
     protected proponenteRepository: ProponenteRepository,
     @repository(SolicitudProponenteRepository)
     protected solicitudProponenteRepository: SolicitudProponenteRepository,
+    @repository(SolicitudRepository)
+    protected solicitudRepository: SolicitudRepository,
     @service(NotificacionesService)
     public servicioNotificaciones: NotificacionesService,
   ) {}
@@ -80,12 +88,66 @@ export class ProponenteSolicitudController {
     let solicitudProponente = this.proponenteRepository
       .tiene_muchas(id)
       .create(solicitud);
-    let datos = new NotificacionCorreo();
+
+    /* let datos = new NotificacionCorreo();
     datos.destinatario = proponente.email;
     datos.asunto = Configuracion.asuntoUsuarioCreado;
     datos.mensaje = `${Configuracion.saludo} ${proponente.primer_nombre} <br>${Configuracion.mensajeUsuarioCreado}`;
-    this.servicioNotificaciones.EnviarCorreo(datos);
+    this.servicioNotificaciones.EnviarCorreo(datos); */
     return solicitudProponente;
+  }
+
+  @post('/solicitud-proponente', {
+    responses: {
+      '200': {
+        description: 'create a Rol model instance',
+        content: {
+          'application/json': {schema: getModelSchemaRef(SolicitudProponente)},
+        },
+      },
+    },
+  })
+  async createUnUsuarioUnRol(
+    @requestBody({
+      content: {
+        'application/json': {
+          schema: getModelSchemaRef(SolicitudProponente, {
+            title: 'New',
+            exclude: ['id'],
+          }),
+        },
+      },
+    })
+    datos: Omit<SolicitudProponente, 'id'>,
+    //proponente: Proponente
+  ): Promise<SolicitudProponente | null | undefined> {
+    let registroRepetido = await this.solicitudProponenteRepository.findOne({
+      where: {
+        id_proponente: datos.id_proponente,
+        id_solicitud: datos.id_solicitud,
+      },
+    });
+    let registro;
+    if (!registroRepetido) {
+      registro = await this.solicitudProponenteRepository.create(datos);
+      let proponente = await this.proponenteRepository.findById(
+        datos.id_proponente,
+      );
+      let solicitud = await this.solicitudRepository.findById(
+        datos.id_solicitud,
+      );
+
+      let correo = new NotificacionCorreo();
+      correo.destinatario = proponente.email;
+      correo.asunto = Configuracion.asuntoSolicitudProponente;
+      correo.mensaje = `${Configuracion.saludo}, <b> ${proponente.primer_nombre} ${proponente.primer_apellido}</b>: <br> ${Configuracion.mensaje1} "${solicitud.nombre_solicitud}" ${Configuracion.mensaje2} ${Configuracion.fechaFormat}
+     ${Configuracion.mensaje3} "${solicitud.descripcion}" ${Configuracion.mensaje4}`;
+
+      this.servicioNotificaciones.EnviarCorreo(correo);
+      return registro;
+    }
+
+    return registro;
   }
 
   @patch('/proponentes/{id}/solicituds', {
