@@ -83,20 +83,14 @@ export class ProponenteSolicitudController {
       },
     })
     solicitud: Omit<Solicitud, 'id'>,
-    proponente: Omit<Proponente, 'id'>,
   ): Promise<Solicitud> {
     let solicitudProponente = this.proponenteRepository
       .tiene_muchas(id)
       .create(solicitud);
-
-    /* let datos = new NotificacionCorreo();
-    datos.destinatario = proponente.email;
-    datos.asunto = Configuracion.asuntoUsuarioCreado;
-    datos.mensaje = `${Configuracion.saludo} ${proponente.primer_nombre} <br>${Configuracion.mensajeUsuarioCreado}`;
-    this.servicioNotificaciones.EnviarCorreo(datos); */
     return solicitudProponente;
   }
 
+  // Punto 4
   @post('/solicitud-proponente', {
     responses: {
       '200': {
@@ -119,16 +113,15 @@ export class ProponenteSolicitudController {
       },
     })
     datos: Omit<SolicitudProponente, 'id'>,
-    //proponente: Proponente
   ): Promise<SolicitudProponente | null | undefined> {
     let registroRepetido = await this.solicitudProponenteRepository.findOne({
       where: {
         id_proponente: datos.id_proponente,
         id_solicitud: datos.id_solicitud,
       },
-    });
+    }); //Se consulta si hay ya un registro existente
     let registro;
-    if (!registroRepetido) {
+        if (!registroRepetido) { //En caso de que no exista actualmente el registro, lo crea
       registro = await this.solicitudProponenteRepository.create(datos);
       let proponente = await this.proponenteRepository.findById(
         datos.id_proponente,
@@ -136,13 +129,14 @@ export class ProponenteSolicitudController {
       let solicitud = await this.solicitudRepository.findById(
         datos.id_solicitud,
       );
-
+      //Se almacenan los datos en variables para luego usar los datos tanto de la solicitud como del proponente para enviar correo
       let correo = new NotificacionCorreo();
       correo.destinatario = proponente.email;
       correo.asunto = Configuracion.asuntoSolicitudProponente;
-      correo.mensaje = `${Configuracion.saludo}, <b> ${proponente.primer_nombre} ${proponente.primer_apellido}</b>: <br> ${Configuracion.mensaje1} "${solicitud.nombre_solicitud}" ${Configuracion.mensaje2} ${Configuracion.fechaFormat}
-     ${Configuracion.mensaje3} "${solicitud.descripcion}" ${Configuracion.mensaje4}`;
+      correo.mensaje = `${Configuracion.saludo}, <b> ${proponente.primer_nombre} ${proponente.primer_apellido}</b>: <br> ${Configuracion.mensaje1Solicitud} "${solicitud.nombre_solicitud}" ${Configuracion.mensaje2Solicitud} ${Configuracion.fechaFormat}
+     ${Configuracion.mensaje3Solicitud} "${solicitud.descripcion}" ${Configuracion.mensaje4Solicitud}`;
 
+      //Se consume el servicio local, el cual consume el microservicio, y luego se retorna el registro
       this.servicioNotificaciones.EnviarCorreo(correo);
       return registro;
     }

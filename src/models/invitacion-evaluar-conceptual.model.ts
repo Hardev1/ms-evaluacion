@@ -1,6 +1,7 @@
 import {Model, model, property} from '@loopback/repository';
 
 @model()
+//Modelo para asignar las solicitudes que los jurados van a evaluar
 export class InvitacionEvaluarConceptual extends Model {
   @property({
     type: 'array',
@@ -37,9 +38,10 @@ export class InvitacionEvaluarConceptual extends Model {
 
   @property({
     type: 'number',
-    required: true,
+    required: false,
+    default: 0
   })
-  estado_invitacion: number;
+  estado_invitacion?: number;
 
   @property({
     type: 'string',
@@ -47,6 +49,11 @@ export class InvitacionEvaluarConceptual extends Model {
   })
   observaciones: string;
 
+  @property({
+    type: 'string',
+    required: false,
+  })
+  hash?: string;
 
   constructor(data?: Partial<InvitacionEvaluarConceptual>) {
     super(data);

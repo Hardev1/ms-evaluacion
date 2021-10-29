@@ -36,21 +36,28 @@ export class InvitacionEvaluar extends Entity {
 
   @property({
     type: 'date',
-    required: true,
-  })
-  fecha_respuesta: string;
+    required: false,
+  })//Opcional, pues puede que no se responda la invitación
+  fecha_respuesta?: string;
 
   @property({
     type: 'number',
-    required: true,
+    required: false,
+    default: 0
   })
-  estado_invitacion: number;
+  estado_invitacion?: number;
 
   @property({
     type: 'string',
     required: true,
   })
   observaciones: string;
+
+  @property({
+    type: 'string',
+    required: false,
+  })
+  hash?: string;
 
   @belongsTo(() => Jurado, {name: 'pertenece_a'})
   id_jurado: number;

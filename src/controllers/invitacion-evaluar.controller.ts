@@ -1,3 +1,4 @@
+import {service} from '@loopback/core';
 import {
   Count,
   CountSchema,
@@ -24,8 +25,9 @@ import {
   InvitacionEvaluarConceptual,
   NotificacionCorreo,
 } from '../models';
-import {InvitacionEvaluarRepository, JuradoRepository} from '../repositories';
-const createHash = require('hash-generator');
+import {InvitacionEvaluarRepository, JuradoRepository, SolicitudRepository} from '../repositories';
+import {NotificacionesService} from '../services';
+
 
 export class InvitacionEvaluarController {
   constructor(
@@ -33,6 +35,10 @@ export class InvitacionEvaluarController {
     public invitacionEvaluarRepository: InvitacionEvaluarRepository,
     @repository(JuradoRepository)
     public juradoRepository: JuradoRepository,
+    @repository(SolicitudRepository)
+    public solicitudRepository: SolicitudRepository,
+    @service(NotificacionesService)
+    public servicioNotificaciones: NotificacionesService
   ) {}
 
   @post('/invitacion-evaluar')
@@ -86,25 +92,29 @@ export class InvitacionEvaluarController {
         let invitacionEvaluar = new InvitacionEvaluar();
         invitacionEvaluar.id_jurado = value;
         invitacionEvaluar.id_solicitud = value2;
-        invitacionEvaluar.estado_invitacion =
-          invitacionEvaluarConceptual.estado_invitacion;
-        invitacionEvaluar.fecha_invitacion =
-          invitacionEvaluarConceptual.fecha_invitacion;
-        invitacionEvaluar.fecha_respuesta =
-          invitacionEvaluarConceptual.fecha_respuesta;
-        let temporal =
-          this.invitacionEvaluarRepository.create(invitacionEvaluar);
+        invitacionEvaluar.fecha_invitacion = invitacionEvaluarConceptual.fecha_invitacion;
+        invitacionEvaluar.fecha_respuesta = invitacionEvaluarConceptual.fecha_respuesta;
+        invitacionEvaluar.observaciones = invitacionEvaluarConceptual.observaciones;
+        invitacionEvaluar.estado_invitacion = invitacionEvaluarConceptual.estado_invitacion;
+        invitacionEvaluar.hash = Configuracion.hash;
+        /* let temporal =
+          this.invitacionEvaluarRepository.create(invitacionEvaluar); */
         let jurado = await this.juradoRepository.findOne({
           where: {id: value},
         }); //encontrar cada jurado con el que se envia la solicitud para evaluar y enviarle correo c/a
+        let solicitud = await this.solicitudRepository.findOne({
+          where: {id: value2}
+        });
         let correo = new NotificacionCorreo();
-        if (jurado?.email) {
+        if (jurado?.email) { //Se verifica que el jurado posea un email
           correo.destinatario = jurado.email;
-          correo.asunto = Configuracion.asuntoSolicitudProponente;
-          /* correo.mensaje = `${Configuracion.saludo}, <b> ${jurado.nombre}</b>: <br> ${Configuracion.mensaje1} "${solicitud.nombre_solicitud}" ${Configuracion.mensaje2} ${Configuracion.fechaFormat}
-     ${Configuracion.mensaje3} "${solicitud.descripcion}" ${Configuracion.mensaje4}`;
-          //Hacer el link para aceptar o rechazar solicitud para el jurado, cómo generar un link unico?
-          this.servicioNotificaciones.EnviarCorreo(correo); */
+          correo.asunto = Configuracion.asuntoInvitacionEvaluar;
+          correo.mensaje = `${Configuracion.saludo}, <b> ${jurado.nombre}</b>: <br> ${Configuracion.mensaje1InvitacionEvaluar} ${solicitud?.nombre_solicitud}. <br> 
+          ${Configuracion.mensaje2InvitacionEvaluar} ${Configuracion.mensaje3InvitacionEvaluar} ${Configuracion.enlace}`;
+          //Para almacenar el hash, se crea nueva propiedad en invitacion-evaluar
+          
+          this.invitacionEvaluarRepository.save(invitacionEvaluar)
+          this.servicioNotificaciones.EnviarCorreo(correo);
         }
       });
     });
@@ -112,7 +122,7 @@ export class InvitacionEvaluarController {
   }
 
   @get('/invitacion-evaluar/count')
-  @response(200, {
+  @response(200, { // Humberto hable por meet
     description: 'InvitacionEvaluar model count',
     content: {'application/json': {schema: CountSchema}},
   })
@@ -239,4 +249,6 @@ export class InvitacionEvaluarController {
   async deleteById(@param.path.number('id') id: number): Promise<void> {
     await this.invitacionEvaluarRepository.deleteById(id);
   }
+
+  
 }
