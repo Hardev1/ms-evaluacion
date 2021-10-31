@@ -33,5 +33,9 @@ export namespace Configuracion {
   export let hash = createHash(hashLength);
   export let enlace = 
   `<a href="http://localhost:4200${hash}" style="font-weight:bold;">Confirmar respuesta</a>`;
+  export const url_validar_token = "http://localhost:5001/validar-token"
+  export const rol_administrador = "614a59a2353790287cca0b39"
+  export const arg_token = "token";
+  export const arg_rol_validar = "rol"
 }
 
