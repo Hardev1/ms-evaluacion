@@ -64,7 +64,7 @@ export class CargarArchivosController {
    * @param response
    * @param request
    */
-  @post('/CargarDocumentoPersona', {
+  @post('/CargarSolicitud', {
     responses: {
       200: {
         content: {
@@ -82,8 +82,8 @@ export class CargarArchivosController {
     @inject(RestBindings.Http.RESPONSE) response: Response,
     @requestBody.file() request: Request,
   ): Promise<object | false> {
-    const rutaDocumentoPersona = path.join(__dirname, llaves.carpetaDocumentoPersona);
-    let res = await this.StoreFileToPath(rutaDocumentoPersona, llaves.nombreCampoDocumentoPersona, request, response, llaves.extensionesPermitidasDOC);
+    const rutaSolicitud = path.join(__dirname, llaves.carpetaSolicitud);
+    let res = await this.StoreFileToPath(rutaSolicitud, llaves.nombreCampoSolicitud, request, response, llaves.extensionesPermitidasDOC);
     if (res) {
       const nombre_archivo = response.req?.file?.filename;
       if (nombre_archivo) {
