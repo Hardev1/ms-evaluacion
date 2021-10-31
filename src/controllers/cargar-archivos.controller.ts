@@ -9,15 +9,16 @@ import {
 } from '@loopback/rest';
 import multer from 'multer';
 import path from 'path';
-import {Keys as llaves} from '../config/keys';
-import {ProponenteRepository} from '../repositories';
+import {Keys as Configuracion} from '../config/keys';
+import {ProponenteRepository, SolicitudRepository} from '../repositories';
 
-export class CargarArchivosController {
+export class CargarArchivoController {
   constructor(
     @repository(ProponenteRepository)
-    private proponenteRepository: ProponenteRepository
+    private proponenteRepository: ProponenteRepository,
+    @repository(SolicitudRepository)
+    private solicitudRepository: SolicitudRepository
   ) { }
-
 
 
   /**
@@ -44,16 +45,15 @@ export class CargarArchivosController {
     @requestBody.file() request: Request,
     @param.path.number("id_proponente") id_proponente: number
   ): Promise<object | false> {
-    const rutaImagenProponente = path.join(__dirname, llaves.carpetaImagenProponente);
-    let res = await this.StoreFileToPath(rutaImagenProponente, llaves.nombreCampoImagenProponente, request, response, llaves.extensionesPermitidasIMG);
+    const rutaImagenProponente = path.join(__dirname, Configuracion.carpetaImagenProponente);
+    let res = await this.StoreFileToPath(rutaImagenProponente, Configuracion.nombreCampoImagenProponente, request, response, Configuracion.extensionesPermitidasIMG);
     if (res) {
       const nombre_archivo = response.req?.file?.filename;
       if (nombre_archivo) {
-        //let img = new Image();
-        //img.name = nombre_archivo;
-        //img.productId = id_proponente;
-        //await this.proponenteRepository.save(img);
-        //return {filename: nombre_archivo};
+        let proponente = await this.proponenteRepository.findById(id_proponente)
+        proponente.fotografia = nombre_archivo
+        await this.proponenteRepository.save(proponente)
+        return {filename: nombre_archivo};
       }
     }
     return res;
@@ -64,7 +64,7 @@ export class CargarArchivosController {
    * @param response
    * @param request
    */
-  @post('/CargarSolicitud', {
+  @post('/CargarSolicitud{id_solicitud}', {
     responses: {
       200: {
         content: {
@@ -78,15 +78,19 @@ export class CargarArchivosController {
       },
     },
   })
-  async DocumentosPersona(
+  async DocumentosSolicitud(
     @inject(RestBindings.Http.RESPONSE) response: Response,
     @requestBody.file() request: Request,
+    @param.path.number("id_solicitud") id_solicitud: number
   ): Promise<object | false> {
-    const rutaSolicitud = path.join(__dirname, llaves.carpetaSolicitud);
-    let res = await this.StoreFileToPath(rutaSolicitud, llaves.nombreCampoSolicitud, request, response, llaves.extensionesPermitidasDOC);
+    const rutaImagenProponente = path.join(__dirname, Configuracion.carpetaSolicitud);
+    let res = await this.StoreFileToPath(rutaImagenProponente, Configuracion.nombreCampoSolicitud, request, response, Configuracion.extensionesPermitidasDOC);
     if (res) {
       const nombre_archivo = response.req?.file?.filename;
       if (nombre_archivo) {
+        let solicitud = await this.solicitudRepository.findById(id_solicitud)
+        solicitud.archivo = nombre_archivo
+        await this.solicitudRepository.save(solicitud)
         return {filename: nombre_archivo};
       }
     }
@@ -131,7 +135,7 @@ export class CargarArchivosController {
           return callback(new HttpErrors[400]('El formato del archivo no es permitido.'));
         },
         limits: {
-          fileSize: llaves.tamMaxImagenProponente
+          fileSize: Configuracion.tamMaxImagenProponente
         }
       },
       ).single(fieldname);

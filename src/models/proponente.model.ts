@@ -78,11 +78,10 @@ export class Proponente extends Entity {
   celular: string;
 
   @property({
-    type: 'array',
-    itemType: 'string',
-    required: true,
+    type: 'string',
+    required: false
   })
-  fotografia: string[];
+  fotografia?: string;
 
   @hasMany(() => Solicitud, {
     through: {
