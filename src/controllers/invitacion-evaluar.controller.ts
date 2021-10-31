@@ -18,7 +18,7 @@ import {
   requestBody,
   response,
 } from '@loopback/rest';
-import {Configuracion} from '../llaves/config';
+import { Keys } from '../config/keys';
 import {
   AceptarSolicitudes,
   InvitacionEvaluar,
@@ -96,7 +96,7 @@ export class InvitacionEvaluarController {
         invitacionEvaluar.fecha_respuesta = invitacionEvaluarConceptual.fecha_respuesta;
         invitacionEvaluar.observaciones = invitacionEvaluarConceptual.observaciones;
         invitacionEvaluar.estado_invitacion = invitacionEvaluarConceptual.estado_invitacion;
-        invitacionEvaluar.hash = Configuracion.hash;
+        invitacionEvaluar.hash = Keys.hash;
         /* let temporal =
           this.invitacionEvaluarRepository.create(invitacionEvaluar); */
         let jurado = await this.juradoRepository.findOne({
@@ -108,9 +108,9 @@ export class InvitacionEvaluarController {
         let correo = new NotificacionCorreo();
         if (jurado?.email) { //Se verifica que el jurado posea un email
           correo.destinatario = jurado.email;
-          correo.asunto = Configuracion.asuntoInvitacionEvaluar;
-          correo.mensaje = `${Configuracion.saludo}, <b> ${jurado.nombre}</b>: <br> ${Configuracion.mensaje1InvitacionEvaluar} ${solicitud?.nombre_solicitud}. <br> 
-          ${Configuracion.mensaje2InvitacionEvaluar} ${Configuracion.mensaje3InvitacionEvaluar} ${Configuracion.enlace}`;
+          correo.asunto = Keys.asuntoInvitacionEvaluar;
+          correo.mensaje = `${Keys.saludo}, <b> ${jurado.nombre}</b>: <br> ${Keys.mensaje1InvitacionEvaluar} ${solicitud?.nombre_solicitud}. <br> 
+          ${Keys.mensaje2InvitacionEvaluar} ${Keys.mensaje3InvitacionEvaluar} ${Keys.enlace}`;
           //Para almacenar el hash, se crea nueva propiedad en invitacion-evaluar
           
           this.invitacionEvaluarRepository.save(invitacionEvaluar)

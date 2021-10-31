@@ -1,7 +1,7 @@
 import { AuthenticationStrategy } from '@loopback/authentication';
 import { HttpErrors, Request } from '@loopback/rest';
 import { UserProfile } from '@loopback/security';
-import { Configuracion } from '../llaves/config';
+import { Keys } from '../config/keys';
 import parseBearerToken from 'parse-bearer-token';
 const fetch = require('node-fetch');
 
@@ -13,7 +13,7 @@ export class AdministratorStrategy implements AuthenticationStrategy {
     async authenticate(request: Request): Promise<UserProfile | undefined> {
         let token = parseBearerToken(request);
         if (token) {
-            let url = `${Configuracion.url_validar_token}?${Configuracion.arg_rol_validar}=${Configuracion.rol_administrador}&${Configuracion.arg_token}=${token}`;
+            let url = `${Keys.url_validar_token}?${Keys.arg_rol_validar}=${Keys.rol_administrador}&${Keys.arg_token}=${token}`;
             let respuesta = "";
             await fetch (url)
                 .then(async (res:any) => {

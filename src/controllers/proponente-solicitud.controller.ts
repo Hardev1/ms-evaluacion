@@ -16,7 +16,7 @@ import {
   post,
   requestBody,
 } from '@loopback/rest';
-import {Configuracion} from '../llaves/config';
+import { Keys } from '../config/keys';
 import {
   NotificacionCorreo,
   Proponente,
@@ -132,9 +132,9 @@ export class ProponenteSolicitudController {
       //Se almacenan los datos en variables para luego usar los datos tanto de la solicitud como del proponente para enviar correo
       let correo = new NotificacionCorreo();
       correo.destinatario = proponente.email;
-      correo.asunto = Configuracion.asuntoSolicitudProponente;
-      correo.mensaje = `${Configuracion.saludo}, <b> ${proponente.primer_nombre} ${proponente.primer_apellido}</b>: <br> ${Configuracion.mensaje1Solicitud} "${solicitud.nombre_solicitud}" ${Configuracion.mensaje2Solicitud} ${Configuracion.fechaFormat}
-     ${Configuracion.mensaje3Solicitud} "${solicitud.descripcion}" ${Configuracion.mensaje4Solicitud}`;
+      correo.asunto = Keys.asuntoSolicitudProponente;
+      correo.mensaje = `${Keys.saludo}, <b> ${proponente.primer_nombre} ${proponente.primer_apellido}</b>: <br> ${Keys.mensaje1Solicitud} "${solicitud.nombre_solicitud}" ${Keys.mensaje2Solicitud} ${Keys.fechaFormat}
+     ${Keys.mensaje3Solicitud} "${solicitud.descripcion}" ${Keys.mensaje4Solicitud}`;
 
       //Se consume el servicio local, el cual consume el microservicio, y luego se retorna el registro
       this.servicioNotificaciones.EnviarCorreo(correo);
