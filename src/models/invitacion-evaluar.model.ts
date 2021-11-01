@@ -49,9 +49,10 @@ export class InvitacionEvaluar extends Entity {
 
   @property({
     type: 'string',
-    required: true,
+    required: false,
+    default: ""
   })
-  observaciones: string;
+  observaciones?: string;
 
   @property({
     type: 'string',

@@ -19,7 +19,26 @@ export class Jurado extends Entity {
     type: 'string',
     required: true,
   })
+  apellido: string;
+  
+  @property({
+    type: 'string',
+    required: true,
+    unique: true,
+  })
+  documento: string;
+
+  @property({
+    type: 'string',
+    required: true,
+  })
   telefono: string;
+
+  @property({
+    type: 'date',
+    required: true,
+  })
+  fechaNacimiento: string;
 
   @property({
     type: 'string',

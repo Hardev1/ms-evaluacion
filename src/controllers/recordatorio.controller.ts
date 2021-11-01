@@ -1,3 +1,4 @@
+import {service} from '@loopback/core';
 import {
   Count,
   CountSchema,
@@ -17,13 +18,31 @@ import {
   requestBody,
   response,
 } from '@loopback/rest';
-import {Recordatorio} from '../models';
-import {RecordatorioRepository} from '../repositories';
+import {Recordatorio, NotificacionCorreo} from '../models';
+import {
+  RecordatorioRepository,
+  InvitacionEvaluarRepository,
+  JuradoRepository,
+  SolicitudRepository,
+  ProponenteRepository,
+} from '../repositories';
+import {Keys} from '../config/keys';
+import {NotificacionesService} from '../services';
 
 export class RecordatorioController {
   constructor(
     @repository(RecordatorioRepository)
-    public recordatorioRepository : RecordatorioRepository,
+    public recordatorioRepository: RecordatorioRepository,
+    @repository(InvitacionEvaluarRepository)
+    public invitacionEvaluarRepository: InvitacionEvaluarRepository,
+    @repository(JuradoRepository)
+    public juradoRepository: JuradoRepository,
+    @repository(SolicitudRepository)
+    public solicitudRepository: SolicitudRepository,
+    @repository(ProponenteRepository)
+    public proponenteRepository: ProponenteRepository,
+    @service(NotificacionesService)
+    public servicioNotificaciones: NotificacionesService,
   ) {}
 
   @post('/recordatorio')
@@ -44,7 +63,21 @@ export class RecordatorioController {
     })
     recordatorio: Omit<Recordatorio, 'id'>,
   ): Promise<Recordatorio> {
-    return this.recordatorioRepository.create(recordatorio);
+    let recordatorioCorreo = this.recordatorioRepository.create(recordatorio);
+    let invitacion = await this.invitacionEvaluarRepository.findById(
+      recordatorio.id_invitacion_evaluar,
+    );
+    let jurado = await this.juradoRepository.findById(invitacion.id_jurado);
+    let solicitud = await this.solicitudRepository.findById(
+      invitacion.id_solicitud,
+    );
+    let correo = new NotificacionCorreo();
+    correo.destinatario = jurado.email;
+    correo.asunto = `${Keys.asuntoRecordatorio}${solicitud.nombre_solicitud}`;
+    correo.mensaje = `${Keys.saludo}, <b> ${jurado.nombre}</b>: <br> ${Keys.MensajeRecordatorio}<br>`;
+    //Para almacenar el hash, se crea nueva propiedad en invitacion-evaluar
+    this.servicioNotificaciones.EnviarCorreo(correo);
+    return recordatorioCorreo;
   }
 
   @get('/recordatorio/count')
@@ -106,7 +139,8 @@ export class RecordatorioController {
   })
   async findById(
     @param.path.number('id') id: number,
-    @param.filter(Recordatorio, {exclude: 'where'}) filter?: FilterExcludingWhere<Recordatorio>
+    @param.filter(Recordatorio, {exclude: 'where'})
+    filter?: FilterExcludingWhere<Recordatorio>,
   ): Promise<Recordatorio> {
     return this.recordatorioRepository.findById(id, filter);
   }

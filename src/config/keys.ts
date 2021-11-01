@@ -10,6 +10,7 @@ export namespace Keys {
   export const hashNotificacion = '123456d';
   export const urlCorreo = 'http://localhost:5000/correo';
   export const urlSms = 'http://localhost:5000/enviar-texto';
+  export const urlCrearUsuario = 'http://localhost:3001/crear-usuario'
   export const asuntoCambioClave = 'Cambio de contraseña';
   export const saludo = 'Hola';
   export const destinoArg = 'destino';
@@ -23,16 +24,23 @@ export namespace Keys {
     'ha sido registrada en la plataforma de evaluación de la universidad de caldas, dentro de poco será calificada por nuestros jurados';
   export const asuntoSolicitudProponente = 'Se ha registrado tu Solicitud';
   export const asuntoInvitacionEvaluar = 'Invitación solicitud a evaluar';
-  export const mensaje1InvitacionEvaluar = 'se te ha asignado la siguiente solicitud: ';
+  export const mensaje1InvitacionEvaluar = 'Se te ha asignado la siguiente solicitud: ';
   export const mensaje2InvitacionEvaluar = 'Por favor dar respuesta a este correo. ';
   export const mensaje3InvitacionEvaluar = 'En caso de aceptar/rechazar calificar la solicitud asignada, haz click aquí: ';
-  const fecha = new Date();
+  export const fecha = new Date();
   export let fechaFormat = date.format(fecha, 'YYYY/MM/DD HH:mm:ss');
   
   let hashLength = 15;
   export let hash = createHash(hashLength);
   export let enlace = 
   `<a href="http://localhost:4200${hash}" style="font-weight:bold;">Confirmar respuesta</a>`;
+
+  export const nombreArg = 'nombre';
+  export const apellidoArg = 'apellido';
+  export const documentoArg = 'documento';
+  export const fechaNacimientoArg = 'fechaNacimiento';
+  export const emailArg = 'email';
+  export const telefonoArg = 'telefono';
   
   export const url_validar_token = "http://localhost:5001/validar-token"
   export const rol_administrador = "614a59a2353790287cca0b39"
@@ -46,4 +54,7 @@ export namespace Keys {
   export const tamMaxImagenProponente = 1024 * 1024;
   export const nombreCampoSolicitud = 'file';
   export const extensionesPermitidasDOC: string[] = ['.PDF', '.DOC', '.DOCX', '.XLS', '.XLSX'];
+
+  export const asuntoRecordatorio = "Recordatorio para evaluar ";
+  export const MensajeRecordatorio = "Recuerda evaluar esta solicitud que aceptaste calificar en la plataforma de evaluacion Ucaldas.";
 }

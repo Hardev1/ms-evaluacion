@@ -19,14 +19,16 @@ import {
   response,
 } from '@loopback/rest';
 import { Keys } from '../config/keys';
+//import { Rol } from '../../../ms-usuario-rol/src/models/rol.model';
 import {
   AceptarSolicitudes,
   InvitacionEvaluar,
   InvitacionEvaluarConceptual,
   NotificacionCorreo,
+  Jurado
 } from '../models';
 import {InvitacionEvaluarRepository, JuradoRepository, SolicitudRepository} from '../repositories';
-import {NotificacionesService} from '../services';
+import {NotificacionesService, CrearUsuarioJuradoService} from '../services';
 
 
 export class InvitacionEvaluarController {
@@ -38,7 +40,9 @@ export class InvitacionEvaluarController {
     @repository(SolicitudRepository)
     public solicitudRepository: SolicitudRepository,
     @service(NotificacionesService)
-    public servicioNotificaciones: NotificacionesService
+    public servicioNotificaciones: NotificacionesService,
+    @service(CrearUsuarioJuradoService)
+    public crearUsuarioJuradoService: CrearUsuarioJuradoService
   ) {}
 
   @post('/invitacion-evaluar')
@@ -186,11 +190,12 @@ export class InvitacionEvaluarController {
     return this.invitacionEvaluarRepository.findById(id, filter);
   }
 
-  @patch('/invitacion-evaluar/{id}')
+  //Punto 5, cuando se acepta o rechace una invitación a evaluar
+  @patch('/invitacion-evaluar-aceptada/{id}')
   @response(204, {
     description: 'InvitacionEvaluar PATCH success',
   })
-  async updateById(
+  async aceptarInvitacion(
     @param.path.number('id') id: number,
     @requestBody({
       content: {
@@ -200,8 +205,47 @@ export class InvitacionEvaluarController {
       },
     })
     invitacionEvaluar: InvitacionEvaluar,
-  ): Promise<void> {
-    await this.invitacionEvaluarRepository.updateById(id, invitacionEvaluar);
+  ): Promise<InvitacionEvaluar> {
+    let invitacion = await this.invitacionEvaluarRepository.findById(id);
+    let juradoAceptado = await this.juradoRepository.findById(invitacion.id_jurado);
+    invitacion.estado_invitacion = 1;
+    invitacion.fecha_respuesta = invitacionEvaluar.fecha_respuesta;
+    invitacion.observaciones = invitacionEvaluar.observaciones;
+    await this.invitacionEvaluarRepository.save(invitacion);
+    //llamar al otro microservicio para crearle el usuario y la contraseña al jurado que acepta
+    let juradoUsuarioCreado = await this.crearUsuarioJuradoService.CrearUsuario(juradoAceptado)
+    console.log(juradoUsuarioCreado);
+    
+    //enviarle la notificacion del usuario y la contraseña, esto ubicado en user.controller.ts
+    //enviarle a X rol la notificación de que X jurado aceptó calificar X solicitud
+    ////let datos = new NotificacionCorreo();
+        /* datos.destinatario = rol.email;
+        datos.asunto = Keys.asuntoUsuarioCreado;
+        datos.mensaje = `${Keys.saludo} ${user.nombre} <br>${Keys.mensajeUsuarioCreado} <br> ${clave}`;
+        this.servicioNotificaciones.EnviarCorreo(datos); */
+    return invitacion
+  }
+
+  @patch('/invitacion-evaluar-rechazada/{id}')
+  @response(204, {
+    description: 'InvitacionEvaluar PATCH success',
+  })
+  async rechazarInvitacion(
+    @param.path.number('id') id: number,
+    @requestBody({
+      content: {
+        'application/json': {
+          schema: getModelSchemaRef(InvitacionEvaluar, {partial: true}),
+        },
+      },
+    })
+    invitacionEvaluar: InvitacionEvaluar,
+  ): Promise<InvitacionEvaluar> {
+    let invitacion = await this.invitacionEvaluarRepository.findById(id);
+    invitacion.estado_invitacion = 2;
+    invitacion.observaciones = invitacionEvaluar.observaciones;
+    await this.invitacionEvaluarRepository.save(invitacion);
+    return invitacion
   }
 
   @put('/invitacion-evaluar/{id}')
