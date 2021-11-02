@@ -45,7 +45,7 @@ export class RecordatorioController {
     public servicioNotificaciones: NotificacionesService,
   ) {}
 
-  @post('/recordatorio')
+  @post('/recordatorio-correo')
   @response(200, {
     description: 'Recordatorio model instance',
     content: {'application/json': {schema: getModelSchemaRef(Recordatorio)}},
@@ -78,6 +78,28 @@ export class RecordatorioController {
     //Para almacenar el hash, se crea nueva propiedad en invitacion-evaluar
     this.servicioNotificaciones.EnviarCorreo(correo);
     return recordatorioCorreo;
+  }
+
+  @post('/recordatorio-llamada')
+  @response(200, {
+    description: 'Recordatorio model instance',
+    content: {'application/json': {schema: getModelSchemaRef(Recordatorio)}},
+  })
+  async crearRecordatorioLlamada(
+    @requestBody({
+      content: {
+        'application/json': {
+          schema: getModelSchemaRef(Recordatorio, {
+            title: 'NewRecordatorio',
+            exclude: ['id'],
+          }),
+        },
+      },
+    })
+    recordatorio: Omit<Recordatorio, 'id'>,
+  ): Promise<Recordatorio> {
+    let recordatorioLlamada = this.recordatorioRepository.create(recordatorio);
+    return recordatorioLlamada;
   }
 
   @get('/recordatorio/count')

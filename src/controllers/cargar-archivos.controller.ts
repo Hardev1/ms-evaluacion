@@ -10,14 +10,16 @@ import {
 import multer from 'multer';
 import path from 'path';
 import {Keys as Configuracion} from '../config/keys';
-import {ProponenteRepository, SolicitudRepository} from '../repositories';
+import {ProponenteRepository, SolicitudRepository, ResultadoEvaluacionRepository} from '../repositories';
 
 export class CargarArchivoController {
   constructor(
     @repository(ProponenteRepository)
     private proponenteRepository: ProponenteRepository,
     @repository(SolicitudRepository)
-    private solicitudRepository: SolicitudRepository
+    private solicitudRepository: SolicitudRepository,
+    @repository(ResultadoEvaluacionRepository)
+    private resultadoEvaluacionRepository: ResultadoEvaluacionRepository
   ) { }
 
 
@@ -96,6 +98,46 @@ export class CargarArchivoController {
     }
     return res;
   }
+
+
+  /**
+   *
+   * @param response
+   * @param request
+   */
+   @post('/CargarResultado{id_resultado}', {
+    responses: {
+      200: {
+        content: {
+          'application/json': {
+            schema: {
+              type: 'object',
+            },
+          },
+        },
+        description: 'Función de carga de documentos de la persona.',
+      },
+    },
+  })
+  async DocumentosResultado(
+    @inject(RestBindings.Http.RESPONSE) response: Response,
+    @requestBody.file() request: Request,
+    @param.path.number("id_resultado") id_resultado: number
+  ): Promise<object | false> {
+    const rutaImagenProponente = path.join(__dirname, Configuracion.carpetaResultadoSolicitud);
+    let res = await this.StoreFileToPath(rutaImagenProponente, Configuracion.nombreCampoSolicitud, request, response, Configuracion.extensionesPermitidasDOC);
+    if (res) {
+      const nombre_archivo = response.req?.file?.filename;
+      if (nombre_archivo) {
+        let resultado= await this.resultadoEvaluacionRepository.findById(id_resultado)
+        resultado.formato_diligenciado = nombre_archivo
+        await this.resultadoEvaluacionRepository.save(resultado)
+        return {filename: nombre_archivo};
+      }
+    }
+    return res;
+  }
+
 
 
   /**

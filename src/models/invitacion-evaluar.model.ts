@@ -37,6 +37,7 @@ export class InvitacionEvaluar extends Entity {
   @property({
     type: 'date',
     required: false,
+    default: null
   })//Opcional, pues puede que no se responda la invitación
   fecha_respuesta?: string;
 

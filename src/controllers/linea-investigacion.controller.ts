@@ -47,7 +47,7 @@ export class LineaInvestigacionController {
     return this.lineaInvestigacionRepository.create(lineaInvestigacion);
   }
 
-  @get('/linea-investigacions/count')
+  @get('/linea-investigacion/count')
   @response(200, {
     description: 'LineaInvestigacion model count',
     content: {'application/json': {schema: CountSchema}},
@@ -58,7 +58,7 @@ export class LineaInvestigacionController {
     return this.lineaInvestigacionRepository.count(where);
   }
 
-  @get('/linea-investigacions')
+  @get('/linea-investigacion')
   @response(200, {
     description: 'Array of LineaInvestigacion model instances',
     content: {
@@ -76,7 +76,7 @@ export class LineaInvestigacionController {
     return this.lineaInvestigacionRepository.find(filter);
   }
 
-  @patch('/linea-investigacions')
+  @patch('/linea-investigacion')
   @response(200, {
     description: 'LineaInvestigacion PATCH success count',
     content: {'application/json': {schema: CountSchema}},
@@ -95,7 +95,7 @@ export class LineaInvestigacionController {
     return this.lineaInvestigacionRepository.updateAll(lineaInvestigacion, where);
   }
 
-  @get('/linea-investigacions/{id}')
+  @get('/linea-investigacion/{id}')
   @response(200, {
     description: 'LineaInvestigacion model instance',
     content: {
@@ -111,7 +111,7 @@ export class LineaInvestigacionController {
     return this.lineaInvestigacionRepository.findById(id, filter);
   }
 
-  @patch('/linea-investigacions/{id}')
+  @patch('/linea-investigacion/{id}')
   @response(204, {
     description: 'LineaInvestigacion PATCH success',
   })
@@ -129,7 +129,7 @@ export class LineaInvestigacionController {
     await this.lineaInvestigacionRepository.updateById(id, lineaInvestigacion);
   }
 
-  @put('/linea-investigacions/{id}')
+  @put('/linea-investigacion/{id}')
   @response(204, {
     description: 'LineaInvestigacion PUT success',
   })
@@ -140,7 +140,7 @@ export class LineaInvestigacionController {
     await this.lineaInvestigacionRepository.replaceById(id, lineaInvestigacion);
   }
 
-  @del('/linea-investigacions/{id}')
+  @del('/linea-investigacion/{id}')
   @response(204, {
     description: 'LineaInvestigacion DELETE success',
   })

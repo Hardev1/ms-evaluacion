@@ -1,3 +1,4 @@
+import {service} from '@loopback/core';
 import {
   Count,
   CountSchema,
@@ -17,16 +18,28 @@ import {
   requestBody,
   response,
 } from '@loopback/rest';
-import {Solicitud} from '../models';
-import {SolicitudRepository} from '../repositories';
+import {Solicitud, NotificacionCorreo, SolicitudProponente} from '../models';
+import {Keys} from '../config/keys';
+import {
+  SolicitudRepository,
+  SolicitudProponenteRepository,
+  ProponenteRepository,
+} from '../repositories';
+import {NotificacionesService} from '../services';
 
 export class SolicitudController {
   constructor(
     @repository(SolicitudRepository)
     public solicitudRepository: SolicitudRepository,
+    @repository(SolicitudProponenteRepository)
+    public solicitudProponenteRepository: SolicitudProponenteRepository,
+    @repository(ProponenteRepository)
+    public proponenteRepository: ProponenteRepository,
+    @service(NotificacionesService)
+    public servicioNotificaciones: NotificacionesService,
   ) {}
 
-  @post('/solicituds')
+  @post('/crear-solicitud')
   @response(200, {
     description: 'Solicitud model instance',
     content: {'application/json': {schema: getModelSchemaRef(Solicitud)}},
@@ -43,9 +56,34 @@ export class SolicitudController {
       },
     })
     solicitud: Omit<Solicitud, 'id'>,
-  ): Promise<Solicitud> {
-    //crear solicitudProponente
-    return this.solicitudRepository.create(solicitud);
+  ): Promise<Solicitud | undefined> {
+    let solicitudRepetida = await this.solicitudRepository.findOne({
+      where: {
+        
+        nombre_solicitud: solicitud.nombre_solicitud,
+        id_tipo_solicitud: solicitud.id_tipo_solicitud,
+        id_linea_investigacion: solicitud.id_linea_investigacion,
+        id_modalidad: solicitud.id_modalidad
+      },
+    });
+    if (!solicitudRepetida) {
+      return this.solicitudRepository.create(solicitud);
+    }
+    this.solicitudRepository.create(solicitud);//Se debe configurar cual es el proponente que hace la solicitud repetida
+    /* let solicitudProponente = await this.solicitudProponenteRepository.findOne({
+      where: {id_solicitud: solicitudRepetida.id},
+    });
+    let proponente = await this.proponenteRepository.findById(
+      solicitudProponente?.id_solicitud,
+    ) */
+    solicitud.id_estado_solicitud = 3;
+    await this.solicitudRepository.save(solicitud);
+    /* let correo = new NotificacionCorreo();
+    correo.destinatario = proponente.email;
+    correo.asunto = Keys.asuntoSolicitudExistente;
+    correo.mensaje = `${Keys.saludo}, <b> ${proponente.primer_nombre}</b>: <br> ${Keys.mensajeSollicitudExitente1} <strong>${solicitud.nombre_solicitud}</strong> 
+          ${Keys.mensajeSollicitudExitente2}`;
+    this.servicioNotificaciones.EnviarCorreo(correo); */
   }
 
   @get('/solicituds/count')
@@ -59,7 +97,7 @@ export class SolicitudController {
     return this.solicitudRepository.count(where);
   }
 
-  @get('/solicituds')
+  @get('/solicitud')
   @response(200, {
     description: 'Array of Solicitud model instances',
     content: {

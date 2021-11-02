@@ -32,9 +32,10 @@ export class InvitacionEvaluarConceptual extends Model {
 
   @property({
     type: 'date',
-    required: true,
+    required: false,
+    default: null
   })
-  fecha_respuesta: string;
+  fecha_respuesta?: string;
 
   @property({
     type: 'number',
@@ -45,9 +46,10 @@ export class InvitacionEvaluarConceptual extends Model {
 
   @property({
     type: 'string',
-    required: true,
+    required: false,
+    default: ""
   })
-  observaciones: string;
+  observaciones?: string;
 
   @property({
     type: 'string',

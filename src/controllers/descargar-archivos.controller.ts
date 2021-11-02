@@ -85,6 +85,12 @@ export class DescargarArchivosController {
 
       case 2:
         ruta = path.join(__dirname, llaves.carpetaSolicitud);
+        break;
+      
+      case 3:
+        ruta = path.join(__dirname, llaves.carpetaResultadoSolicitud);
+        break;
+
     }
     return ruta;
   }

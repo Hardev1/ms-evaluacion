@@ -18,18 +18,21 @@ import {
   requestBody,
   response,
 } from '@loopback/rest';
-import { Keys } from '../config/keys';
+import {Keys} from '../config/keys';
 //import { Rol } from '../../../ms-usuario-rol/src/models/rol.model';
 import {
   AceptarSolicitudes,
   InvitacionEvaluar,
   InvitacionEvaluarConceptual,
   NotificacionCorreo,
-  Jurado
+  Jurado,
 } from '../models';
-import {InvitacionEvaluarRepository, JuradoRepository, SolicitudRepository} from '../repositories';
+import {
+  InvitacionEvaluarRepository,
+  JuradoRepository,
+  SolicitudRepository,
+} from '../repositories';
 import {NotificacionesService, CrearUsuarioJuradoService} from '../services';
-
 
 export class InvitacionEvaluarController {
   constructor(
@@ -42,31 +45,8 @@ export class InvitacionEvaluarController {
     @service(NotificacionesService)
     public servicioNotificaciones: NotificacionesService,
     @service(CrearUsuarioJuradoService)
-    public crearUsuarioJuradoService: CrearUsuarioJuradoService
+    public crearUsuarioJuradoService: CrearUsuarioJuradoService,
   ) {}
-
-  @post('/invitacion-evaluar')
-  @response(200, {
-    description: 'InvitacionEvaluar model instance',
-    content: {
-      'application/json': {schema: getModelSchemaRef(InvitacionEvaluar)},
-    },
-  })
-  async create(
-    @requestBody({
-      content: {
-        'application/json': {
-          schema: getModelSchemaRef(InvitacionEvaluar, {
-            title: 'NewInvitacionEvaluar',
-            exclude: ['id'],
-          }),
-        },
-      },
-    })
-    invitacionEvaluar: Omit<InvitacionEvaluar, 'id'>,
-  ): Promise<InvitacionEvaluar> {
-    return this.invitacionEvaluarRepository.create(invitacionEvaluar);
-  }
 
   //Se crea todas las solicitudes necesarias para todos los jurados
   @post('/crear-invitacion-evaluar')
@@ -96,10 +76,12 @@ export class InvitacionEvaluarController {
         let invitacionEvaluar = new InvitacionEvaluar();
         invitacionEvaluar.id_jurado = value;
         invitacionEvaluar.id_solicitud = value2;
-        invitacionEvaluar.fecha_invitacion = invitacionEvaluarConceptual.fecha_invitacion;
-        invitacionEvaluar.fecha_respuesta = invitacionEvaluarConceptual.fecha_respuesta;
-        invitacionEvaluar.observaciones = invitacionEvaluarConceptual.observaciones;
-        invitacionEvaluar.estado_invitacion = invitacionEvaluarConceptual.estado_invitacion;
+        invitacionEvaluar.fecha_invitacion =
+          invitacionEvaluarConceptual.fecha_invitacion;
+        invitacionEvaluar.observaciones =
+          invitacionEvaluarConceptual.observaciones;
+        invitacionEvaluar.estado_invitacion =
+          invitacionEvaluarConceptual.estado_invitacion;
         invitacionEvaluar.hash = Keys.hash;
         /* let temporal =
           this.invitacionEvaluarRepository.create(invitacionEvaluar); */
@@ -107,17 +89,18 @@ export class InvitacionEvaluarController {
           where: {id: value},
         }); //encontrar cada jurado con el que se envia la solicitud para evaluar y enviarle correo c/a
         let solicitud = await this.solicitudRepository.findOne({
-          where: {id: value2}
+          where: {id: value2},
         });
         let correo = new NotificacionCorreo();
-        if (jurado?.email) { //Se verifica que el jurado posea un email
+        if (jurado?.email) {
+          //Se verifica que el jurado posea un email
           correo.destinatario = jurado.email;
           correo.asunto = Keys.asuntoInvitacionEvaluar;
           correo.mensaje = `${Keys.saludo}, <b> ${jurado.nombre}</b>: <br> ${Keys.mensaje1InvitacionEvaluar} ${solicitud?.nombre_solicitud}. <br> 
           ${Keys.mensaje2InvitacionEvaluar} ${Keys.mensaje3InvitacionEvaluar} ${Keys.enlace}`;
           //Para almacenar el hash, se crea nueva propiedad en invitacion-evaluar
-          
-          this.invitacionEvaluarRepository.save(invitacionEvaluar)
+
+          this.invitacionEvaluarRepository.save(invitacionEvaluar);
           this.servicioNotificaciones.EnviarCorreo(correo);
         }
       });
@@ -126,7 +109,8 @@ export class InvitacionEvaluarController {
   }
 
   @get('/invitacion-evaluar/count')
-  @response(200, { // Humberto hable por meet
+  @response(200, {
+    // Humberto hable por meet
     description: 'InvitacionEvaluar model count',
     content: {'application/json': {schema: CountSchema}},
   })
@@ -207,23 +191,28 @@ export class InvitacionEvaluarController {
     invitacionEvaluar: InvitacionEvaluar,
   ): Promise<InvitacionEvaluar> {
     let invitacion = await this.invitacionEvaluarRepository.findById(id);
-    let juradoAceptado = await this.juradoRepository.findById(invitacion.id_jurado);
+    let juradoAceptado = await this.juradoRepository.findById(
+      invitacion.id_jurado,
+    );
     invitacion.estado_invitacion = 1;
     invitacion.fecha_respuesta = invitacionEvaluar.fecha_respuesta;
     invitacion.observaciones = invitacionEvaluar.observaciones;
     await this.invitacionEvaluarRepository.save(invitacion);
     //llamar al otro microservicio para crearle el usuario y la contraseña al jurado que acepta
-    let juradoUsuarioCreado = await this.crearUsuarioJuradoService.CrearUsuario(juradoAceptado)
-    console.log(juradoUsuarioCreado);
-    
+    await this.crearUsuarioJuradoService.CrearUsuario(juradoAceptado);
+    let solicitud = await this.solicitudRepository.findById(
+      invitacionEvaluar.id_solicitud,
+    );
+    solicitud.id_estado_solicitud = 1;
+    await this.solicitudRepository.save(solicitud);
     //enviarle la notificacion del usuario y la contraseña, esto ubicado en user.controller.ts
     //enviarle a X rol la notificación de que X jurado aceptó calificar X solicitud
     ////let datos = new NotificacionCorreo();
-        /* datos.destinatario = rol.email;
+    /* datos.destinatario = rol.email;
         datos.asunto = Keys.asuntoUsuarioCreado;
         datos.mensaje = `${Keys.saludo} ${user.nombre} <br>${Keys.mensajeUsuarioCreado} <br> ${clave}`;
         this.servicioNotificaciones.EnviarCorreo(datos); */
-    return invitacion
+    return invitacion;
   }
 
   @patch('/invitacion-evaluar-rechazada/{id}')
@@ -245,7 +234,7 @@ export class InvitacionEvaluarController {
     invitacion.estado_invitacion = 2;
     invitacion.observaciones = invitacionEvaluar.observaciones;
     await this.invitacionEvaluarRepository.save(invitacion);
-    return invitacion
+    return invitacion;
   }
 
   @put('/invitacion-evaluar/{id}')
@@ -293,6 +282,4 @@ export class InvitacionEvaluarController {
   async deleteById(@param.path.number('id') id: number): Promise<void> {
     await this.invitacionEvaluarRepository.deleteById(id);
   }
-
-  
 }

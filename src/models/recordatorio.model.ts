@@ -29,9 +29,9 @@ export class Recordatorio extends Entity {
 
   @property({
     type: 'number',
-    required: true,
+    required: false,
   })
-  hora: number;
+  hora?: number;
 
   @property({
     type: 'number',
@@ -41,9 +41,9 @@ export class Recordatorio extends Entity {
 
   @property({
     type: 'string',
-    required: true,
+    required: false,
   })
-  descripcion: string;
+  descripcion?: string;
 
   @belongsTo(() => InvitacionEvaluar, {name: 'tiene_una'})
   id_invitacion_evaluar: number;

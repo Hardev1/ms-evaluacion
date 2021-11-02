@@ -49,12 +49,21 @@ export namespace Keys {
 
   export const carpetaImagenProponente = "../../archivos/proponente";
   export const carpetaSolicitud = '../../archivos/solicitud';
+  export const carpetaResultadoSolicitud = '../../archivos/resultadoSolicitud'
   export const nombreCampoImagenProponente = 'file';
   export const extensionesPermitidasIMG: string[] = ['.PNG', '.JPG', '.JPEG', '.SVG'];
   export const tamMaxImagenProponente = 1024 * 1024;
   export const nombreCampoSolicitud = 'file';
   export const extensionesPermitidasDOC: string[] = ['.PDF', '.DOC', '.DOCX', '.XLS', '.XLSX'];
 
-  export const asuntoRecordatorio = "Recordatorio para evaluar ";
+  export const asuntoRecordatorio = "Recordatorio para evaluar";
   export const MensajeRecordatorio = "Recuerda evaluar esta solicitud que aceptaste calificar en la plataforma de evaluacion Ucaldas.";
+
+  export const asuntoResultado = "Resultado de la evaluacion";
+  export const mensajeResultado1 = "Tu solicitud ";
+  export const mensajeResultado2 = "ya ha sido evaluada, el veredicto de los evaluadores es el siguiente: <br>";
+
+  export const asuntoSolicitudExistente = "Solicitud ya existente";
+  export const mensajeSollicitudExitente1 = "La solicutud ";
+  export const mensajeSollicitudExitente2 = "Ya ha sido evaluada en la plataforma previamente";
 }
