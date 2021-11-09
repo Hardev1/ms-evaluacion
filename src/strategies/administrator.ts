@@ -13,7 +13,7 @@ export class AdministratorStrategy implements AuthenticationStrategy {
     async authenticate(request: Request): Promise<UserProfile | undefined> {
         let token = parseBearerToken(request);
         if (token) {
-            let url = `${Keys.url_validar_token}?${Keys.arg_rol_validar}=${Keys.rol_administrador}&${Keys.arg_token}=${token}`;
+            let url = `${Keys.url_validar_token}?${Keys.arg_token}=${token}%${Keys.arg_rol_validar}=${Keys.rol_administrador}`;
             let respuesta = "";
             await fetch (url)
                 .then(async (res:any) => {

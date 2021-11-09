@@ -10,7 +10,7 @@ export namespace Keys {
   export const hashNotificacion = '123456d';
   export const urlCorreo = 'http://localhost:5000/correo';
   export const urlSms = 'http://localhost:5000/enviar-texto';
-  export const urlCrearUsuario = 'http://localhost:3001/crear-usuario'
+  export const urlCrearUsuario = 'http://localhost:3001/crear-evaluador'
   export const asuntoCambioClave = 'Cambio de contraseña';
   export const saludo = 'Hola';
   export const destinoArg = 'destino';
@@ -43,7 +43,7 @@ export namespace Keys {
   export const telefonoArg = 'telefono';
   
   export const url_validar_token = "http://localhost:5001/validar-token"
-  export const rol_administrador = "614a59a2353790287cca0b39"
+  export const rol_administrador = "61805a211f07963610f583a9"
   export const arg_token = "token";
   export const arg_rol_validar = "rol"
 

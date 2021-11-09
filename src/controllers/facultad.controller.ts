@@ -1,3 +1,4 @@
+import { authenticate } from '@loopback/authentication';
 import {
   Count,
   CountSchema,
@@ -20,6 +21,7 @@ import {
 import {Facultad} from '../models';
 import {FacultadRepository} from '../repositories';
 
+@authenticate("admin")
 export class FacultadController {
   constructor(
     @repository(FacultadRepository)
@@ -47,6 +49,7 @@ export class FacultadController {
     return this.facultadRepository.create(facultad);
   }
 
+  @authenticate.skip()
   @get('/facultad/count')
   @response(200, {
     description: 'Facultad model count',
@@ -58,6 +61,7 @@ export class FacultadController {
     return this.facultadRepository.count(where);
   }
 
+  @authenticate.skip()
   @get('/facultad')
   @response(200, {
     description: 'Array of Facultad model instances',

@@ -1,3 +1,4 @@
+import { authenticate } from '@loopback/authentication';
 import {
   Count,
   CountSchema,
@@ -20,6 +21,7 @@ import {
 import {Departamento} from '../models';
 import {DepartamentoRepository} from '../repositories';
 
+@authenticate("admin")
 export class DepartamentoController {
   constructor(
     @repository(DepartamentoRepository)
@@ -47,6 +49,7 @@ export class DepartamentoController {
     return this.departamentoRepository.create(departamento);
   }
 
+  @authenticate.skip()
   @get('/departamentos/count')
   @response(200, {
     description: 'Departamento model count',
@@ -95,6 +98,7 @@ export class DepartamentoController {
     return this.departamentoRepository.updateAll(departamento, where);
   }
 
+  @authenticate.skip()
   @get('/departamentos/{id}')
   @response(200, {
     description: 'Departamento model instance',

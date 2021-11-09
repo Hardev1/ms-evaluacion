@@ -73,7 +73,7 @@ export class RecordatorioController {
     );
     let correo = new NotificacionCorreo();
     correo.destinatario = jurado.email;
-    correo.asunto = `${Keys.asuntoRecordatorio}${solicitud.nombre_solicitud}`;
+    correo.asunto = `${Keys.asuntoRecordatorio} ${solicitud.nombre_solicitud}`;
     correo.mensaje = `${Keys.saludo}, <b> ${jurado.nombre}</b>: <br> ${Keys.MensajeRecordatorio}<br>`;
     //Para almacenar el hash, se crea nueva propiedad en invitacion-evaluar
     this.servicioNotificaciones.EnviarCorreo(correo);
