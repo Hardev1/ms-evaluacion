@@ -66,6 +66,7 @@ export class SolicitudController {
       },
     });
     if (!solicitudRepetida) {
+      solicitud.id_estado_solicitud = 2;
       return this.solicitudRepository.create(solicitud);
     } //Se debe configurar cual es el proponente que hace la solicitud repetida
     /* let solicitudProponente = await this.solicitudProponenteRepository.findOne({

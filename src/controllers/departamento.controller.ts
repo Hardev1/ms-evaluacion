@@ -21,7 +21,7 @@ import {
 import {Departamento} from '../models';
 import {DepartamentoRepository} from '../repositories';
 
-@authenticate("admin")
+
 export class DepartamentoController {
   constructor(
     @repository(DepartamentoRepository)
@@ -49,7 +49,7 @@ export class DepartamentoController {
     return this.departamentoRepository.create(departamento);
   }
 
-  @authenticate.skip()
+  
   @get('/departamentos/count')
   @response(200, {
     description: 'Departamento model count',
@@ -61,6 +61,7 @@ export class DepartamentoController {
     return this.departamentoRepository.count(where);
   }
 
+  
   @get('/departamentos')
   @response(200, {
     description: 'Array of Departamento model instances',
