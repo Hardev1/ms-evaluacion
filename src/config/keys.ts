@@ -54,7 +54,7 @@ export namespace Keys {
   export const extensionesPermitidasIMG: string[] = ['.PNG', '.JPG', '.JPEG', '.SVG'];
   export const tamMaxImagenProponente = 1024 * 1024;
   export const nombreCampoSolicitud = 'file';
-  export const extensionesPermitidasDOC: string[] = ['.PDF', '.DOC', '.DOCX', '.XLS', '.XLSX'];
+  export const extensionesPermitidasDOC: string[] = ['.PDF', '.DOC', '.DOCX', '.XLS', '.XLSX', '.ZIP', '.RAR', '.TAR'];
 
   export const asuntoRecordatorio = "Recordatorio para evaluar";
   export const MensajeRecordatorio = "Recuerda evaluar esta solicitud que aceptaste calificar en la plataforma de evaluacion Ucaldas.";
