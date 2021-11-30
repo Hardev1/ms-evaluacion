@@ -28,6 +28,8 @@ export class CargarArchivoController {
    * @param response
    * @param request
    */
+
+  
   @post('/CargarImagenProponente/{id_proponente}', {
     responses: {
       200: {
@@ -45,7 +47,7 @@ export class CargarArchivoController {
   async cargarImagenDelProponente(
     @inject(RestBindings.Http.RESPONSE) response: Response,
     @requestBody.file() request: Request,
-    @param.path.number("id_proponente") id_proponente: number
+    @param.path.number("id_solicitud") id_proponente: number
   ): Promise<object | false> {
     const rutaImagenProponente = path.join(__dirname, Configuracion.carpetaImagenProponente);
     let res = await this.StoreFileToPath(rutaImagenProponente, Configuracion.nombreCampoImagenProponente, request, response, Configuracion.extensionesPermitidasIMG);
@@ -61,12 +63,71 @@ export class CargarArchivoController {
     return res;
   }
 
+  @post('/CargarDocumentoDeSolicitud', {
+    responses: {
+      200: {
+        content: {
+          'application/json': {
+            schema: {
+              type: 'object',
+            },
+          },
+        },
+        description: 'Función de carga de la imagen de una facultad.',
+      },
+    },
+  })
+  async cargarDocumentoDeSolicitud(
+    @inject(RestBindings.Http.RESPONSE) response: Response,
+    @requestBody.file() request: Request
+  ): Promise<object | false> {
+    const rutaImagenProponente = path.join(__dirname, Configuracion.carpetaSolicitud);
+    let res = await this.StoreFileToPath(rutaImagenProponente, Configuracion.nombreCampoSolicitud, request, response, Configuracion.extensionesPermitidasDOC);
+    if (res) {
+      const nombre_archivo = response.req?.file?.filename;
+      if (nombre_archivo) {
+        return {filename: nombre_archivo};
+      }
+    }
+    return res;
+  }
+
+  @post('/CargarImagenProponente', {
+    responses: {
+      200: {
+        content: {
+          'application/json': {
+            schema: {
+              type: 'object',
+            },
+          },
+        },
+        description: 'Función de carga de la imagen de una facultad.',
+      },
+    },
+  })
+  async cargarImagenPrincipalDelProponente(
+    @inject(RestBindings.Http.RESPONSE) response: Response,
+    @requestBody.file() request: Request
+  ): Promise<object | false> {
+    const rutaImagenProponente = path.join(__dirname, Configuracion.carpetaImagenProponente);
+    let res = await this.StoreFileToPath(rutaImagenProponente, Configuracion.nombreCampoImagenProponente, request, response, Configuracion.extensionesPermitidasIMG);
+    if (res) {
+      const nombre_archivo = response.req?.file?.filename;
+      if (nombre_archivo) {
+        return {filename: nombre_archivo};
+      }
+    }
+    return res;
+  }
+
+
   /**
    *
    * @param response
    * @param request
    */
-  @post('/CargarSolicitud{id_solicitud}', {
+  @post('/CargarSolicitud/{id_solicitud}', {
     responses: {
       200: {
         content: {
@@ -105,7 +166,7 @@ export class CargarArchivoController {
    * @param response
    * @param request
    */
-   @post('/CargarResultado{id_resultado}', {
+   @post('/CargarResultado/{id_resultado}', {
     responses: {
       200: {
         content: {

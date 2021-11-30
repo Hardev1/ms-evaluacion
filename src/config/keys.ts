@@ -42,7 +42,7 @@ export namespace Keys {
   export const emailArg = 'email';
   export const telefonoArg = 'telefono';
   
-  export const url_validar_token = "http://localhost:5001/validar-token"
+  export const url_validar_token = "http://localhost:5000/validar-token"
   export const rol_administrador = "61805a211f07963610f583a9"
   export const arg_token = "token";
   export const arg_rol_validar = "rol"
@@ -52,7 +52,7 @@ export namespace Keys {
   export const carpetaResultadoSolicitud = '../../archivos/resultadoSolicitud'
   export const nombreCampoImagenProponente = 'file';
   export const extensionesPermitidasIMG: string[] = ['.PNG', '.JPG', '.JPEG', '.SVG'];
-  export const tamMaxImagenProponente = 1024 * 1024;
+  export const tamMaxImagenProponente = 7000 * 7000;
   export const nombreCampoSolicitud = 'file';
   export const extensionesPermitidasDOC: string[] = ['.PDF', '.DOC', '.DOCX', '.XLS', '.XLSX', '.ZIP', '.RAR', '.TAR'];
 

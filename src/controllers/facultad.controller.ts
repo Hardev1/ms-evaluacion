@@ -99,6 +99,7 @@ export class FacultadController {
     return this.facultadRepository.updateAll(facultad, where);
   }
 
+  @authenticate.skip()
   @get('/facultad/{id}')
   @response(200, {
     description: 'Facultad model instance',
@@ -133,6 +134,7 @@ export class FacultadController {
     await this.facultadRepository.updateById(id, facultad);
   }
 
+  @authenticate.skip()
   @put('/facultad/{id}')
   @response(204, {
     description: 'Facultad PUT success',
@@ -144,6 +146,7 @@ export class FacultadController {
     await this.facultadRepository.replaceById(id, facultad);
   }
 
+  @authenticate.skip()
   @del('/facultad/{id}')
   @response(204, {
     description: 'Facultad DELETE success',

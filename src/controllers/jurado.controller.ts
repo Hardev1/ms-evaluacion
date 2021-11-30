@@ -28,6 +28,7 @@ export class JuradoController {
     public juradoRepository : JuradoRepository,
   ) {}
 
+  @authenticate.skip()
   @post('/jurado')
   @response(200, {
     description: 'Jurado model instance',
@@ -99,6 +100,7 @@ export class JuradoController {
     return this.juradoRepository.updateAll(jurado, where);
   }
 
+  @authenticate.skip()
   @get('/jurado/{id}')
   @response(200, {
     description: 'Jurado model instance',
@@ -132,7 +134,7 @@ export class JuradoController {
   ): Promise<void> {
     await this.juradoRepository.updateById(id, jurado);
   }
-
+  @authenticate.skip()
   @put('/jurado/{id}')
   @response(204, {
     description: 'Jurado PUT success',
@@ -144,6 +146,7 @@ export class JuradoController {
     await this.juradoRepository.replaceById(id, jurado);
   }
 
+  @authenticate.skip()
   @del('/jurado/{id}')
   @response(204, {
     description: 'Jurado DELETE success',
