@@ -10,7 +10,7 @@ export namespace Keys {
   export const hashNotificacion = '123456d';
   export const urlCorreo = 'http://localhost:5000/correo';
   export const urlSms = 'http://localhost:5000/enviar-texto';
-  export const urlCrearUsuario = 'http://localhost:3001/crear-evaluador'
+  export const urlCrearEvaluador = 'http://localhost:3001/crear-evaluador'
   export const asuntoCambioClave = 'Cambio de contraseña';
   export const saludo = 'Hola';
   export const destinoArg = 'destino';
@@ -33,7 +33,7 @@ export namespace Keys {
   let hashLength = 15;
   export let hash = createHash(hashLength);
   export let enlace = 
-  `<a href="http://localhost:4200${hash}" style="font-weight:bold;">Confirmar respuesta</a>`;
+  `http://localhost:4200/invitacion-evaluar/responder-invitacion`;
 
   export const nombreArg = 'nombre';
   export const apellidoArg = 'apellido';

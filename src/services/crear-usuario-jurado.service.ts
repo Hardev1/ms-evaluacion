@@ -7,7 +7,7 @@ const fetch = require('node-fetch');
 export class CrearUsuarioJuradoService {
   constructor(/* Add @inject to inject parameters */) {}
 
-  async CrearUsuario(datos: Jurado) {
+  async CrearEvaluador(datos: Jurado) {
     const body = {
       nombre: datos.nombre,
       apellido: datos.apellido,
@@ -16,7 +16,7 @@ export class CrearUsuarioJuradoService {
       email: datos.email,
       telefono: datos.telefono
     };
-    const response = await fetch(`${Keys.urlCrearUsuario}`, {
+    const response = await fetch(`${Keys.urlCrearEvaluador}`, {
       method: 'post',
       body: JSON.stringify(body),
       headers: {'Content-Type': 'application/json'},
