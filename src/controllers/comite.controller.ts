@@ -21,13 +21,14 @@ import {
 import {Comite} from '../models';
 import {ComiteRepository} from '../repositories';
 
-@authenticate("admin")
+@authenticate("Administrador", "Auxiliar")
 export class ComiteController {
   constructor(
     @repository(ComiteRepository)
     public comiteRepository : ComiteRepository,
   ) {}
-
+  
+  @authenticate("Administrador", "Auxiliar")
   @post('/comites')
   @response(200, {
     description: 'Comite model instance',
@@ -49,7 +50,7 @@ export class ComiteController {
     return this.comiteRepository.create(comite);
   }
 
-  @authenticate.skip()
+  @authenticate("Administrador", "Auxiliar")
   @get('/comites/count')
   @response(200, {
     description: 'Comite model count',
@@ -61,7 +62,7 @@ export class ComiteController {
     return this.comiteRepository.count(where);
   }
 
-  @authenticate.skip()
+  @authenticate("Administrador", "Auxiliar")
   @get('/comites')
   @response(200, {
     description: 'Array of Comite model instances',
@@ -80,6 +81,7 @@ export class ComiteController {
     return this.comiteRepository.find(filter);
   }
 
+  @authenticate("Administrador", "Auxiliar")
   @patch('/comites')
   @response(200, {
     description: 'Comite PATCH success count',
@@ -99,7 +101,7 @@ export class ComiteController {
     return this.comiteRepository.updateAll(comite, where);
   }
 
-  @authenticate.skip()
+  @authenticate("Administrador", "Auxiliar")
   @get('/comites/{id}')
   @response(200, {
     description: 'Comite model instance',

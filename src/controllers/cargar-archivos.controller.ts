@@ -1,5 +1,6 @@
 import {inject} from '@loopback/core';
 import {repository} from '@loopback/repository';
+import { authenticate } from '@loopback/authentication';
 import {
   HttpErrors, param, post,
   Request,
@@ -12,6 +13,7 @@ import path from 'path';
 import {Keys as Configuracion} from '../config/keys';
 import {ProponenteRepository, SolicitudRepository, ResultadoEvaluacionRepository} from '../repositories';
 
+@authenticate("Administrador", "Auxiliar")
 export class CargarArchivoController {
   constructor(
     @repository(ProponenteRepository)
@@ -29,7 +31,7 @@ export class CargarArchivoController {
    * @param request
    */
 
-  
+  @authenticate("Administrador", "Auxiliar")
   @post('/CargarImagenProponente/{id_proponente}', {
     responses: {
       200: {

@@ -21,7 +21,9 @@ SolicitudComite,
 Solicitud,
 } from '../models';
 import {ComiteRepository} from '../repositories';
+import { authenticate } from '@loopback/authentication';
 
+@authenticate("Administrador", "Auxiliar")
 export class ComiteSolicitudController {
   constructor(
     @repository(ComiteRepository) protected comiteRepository: ComiteRepository,

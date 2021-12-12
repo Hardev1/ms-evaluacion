@@ -29,7 +29,9 @@ import {
 } from '../repositories';
 import {Keys} from '../config/keys';
 import {NotificacionesService} from '../services';
+import { authenticate } from '@loopback/authentication';
 
+@authenticate("Administrador", "Evaluador")
 export class ResultadoEvaluacionController {
   constructor(
     @repository(ResultadoEvaluacionRepository)

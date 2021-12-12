@@ -23,13 +23,14 @@ Proponente,
 } from '../models';
 import {DepartamentoRepository} from '../repositories';
 
-@authenticate("admin")
+
+@authenticate("Administrador", "Auxiliar")
 export class DepartamentoProponenteController {
   constructor(
     @repository(DepartamentoRepository) protected departamentoRepository: DepartamentoRepository,
   ) { }
 
-  @authenticate.skip()
+  
   @get('/departamentos/{id}/proponentes', {
     responses: {
       '200': {

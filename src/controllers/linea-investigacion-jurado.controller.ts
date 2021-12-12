@@ -1,3 +1,4 @@
+import { authenticate } from '@loopback/authentication';
 import {
   Count,
   CountSchema,
@@ -22,6 +23,7 @@ Jurado,
 } from '../models';
 import {LineaInvestigacionRepository} from '../repositories';
 
+@authenticate("Administrador", "Auxiliar")
 export class LineaInvestigacionJuradoController {
   constructor(
     @repository(LineaInvestigacionRepository) protected lineaInvestigacionRepository: LineaInvestigacionRepository,

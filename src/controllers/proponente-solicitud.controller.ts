@@ -1,3 +1,4 @@
+import { authenticate } from '@loopback/authentication';
 import {service} from '@loopback/core';
 import {
   Count,
@@ -30,6 +31,7 @@ import {
 } from '../repositories';
 import {NotificacionesService} from '../services';
 
+@authenticate("Administrador", "Auxiliar")
 export class ProponenteSolicitudController {
   constructor(
     @repository(ProponenteRepository)

@@ -42,8 +42,10 @@ export namespace Keys {
   export const emailArg = 'email';
   export const telefonoArg = 'telefono';
   
-  export const url_validar_token = "http://localhost:5000/validar-token"
-  export const rol_administrador = "61805a211f07963610f583a9"
+  export const url_validar_token = "http://localhost:5000/validar-token";
+  export const rol_administrador = "61805a211f07963610f583a9";
+  export const rol_evaluador = "614a59a2353790287cca0b39";
+  export const rol_auxiliar = "618db07d8db6b0dee6d62fa0";
   export const arg_token = "token";
   export const arg_rol_validar = "rol"
 

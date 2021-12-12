@@ -6,21 +6,18 @@ import parseBearerToken from 'parse-bearer-token';
 const fetch = require('node-fetch');
 
 export class AdministratorStrategy implements AuthenticationStrategy {
-    name: string = 'Administrador';
+    name: string = 'Auxiliar';
   
     constructor() {}
   
     async authenticate(request: Request): Promise<UserProfile | undefined> {
         let token = parseBearerToken(request);
-        console.log(token)
         if (token) {
-            let url = `${Keys.url_validar_token}?${Keys.arg_token}=${token}&${Keys.arg_rol_validar}=${Keys.rol_administrador}`;
+            let url = `${Keys.url_validar_token}?${Keys.arg_token}=${token}&${Keys.arg_rol_validar}=${Keys.rol_auxiliar}`;
             let respuesta = "";
-            console.log(url);
             await fetch (url)
                 .then(async (res:any) => {
                     respuesta = await res.text();
-                    console.log(respuesta)
                 })
             switch (respuesta) {
                 case "OK":
