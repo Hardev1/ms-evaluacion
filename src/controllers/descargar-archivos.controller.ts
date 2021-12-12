@@ -12,12 +12,14 @@ import fs from 'fs';
 import path from 'path';
 import {promisify} from 'util';
 import {Keys as llaves} from '../config/keys';
+import { authenticate } from '@loopback/authentication';
 
 const readdir = promisify(fs.readdir);
 
 /**
  * A controller to handle file downloads using multipart/form-data media type
  */
+@authenticate("Administrador", "Auxiliar")
 export class DescargarArchivosController {
 
   constructor(

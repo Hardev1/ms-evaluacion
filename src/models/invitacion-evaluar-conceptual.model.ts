@@ -26,7 +26,7 @@ export class InvitacionEvaluarConceptual extends Model {
 
   @property({
     type: 'date',
-    required: true,
+    required: false,
   })
   fecha_invitacion: string;
 

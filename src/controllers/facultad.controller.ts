@@ -1,3 +1,4 @@
+import { authenticate } from '@loopback/authentication';
 import {
   Count,
   CountSchema,
@@ -20,6 +21,7 @@ import {
 import {Facultad} from '../models';
 import {FacultadRepository} from '../repositories';
 
+@authenticate("Administrador", "Auxiliar")
 export class FacultadController {
   constructor(
     @repository(FacultadRepository)
@@ -76,7 +78,6 @@ export class FacultadController {
     return this.facultadRepository.find(filter);
   }
 
-  @patch('/facultad')
   @response(200, {
     description: 'Facultad PATCH success count',
     content: {'application/json': {schema: CountSchema}},

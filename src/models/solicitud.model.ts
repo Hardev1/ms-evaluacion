@@ -62,15 +62,15 @@ export class Solicitud extends Entity {
 
   @property({
     type: 'string',
-    required: true,
+    required: false,
   })
-  descripcion: string;
+  descripcion?: string;
 
   @belongsTo(() => TipoSolicitud, {name: 'tiene_un'})
   id_tipo_solicitud: number;
 
   @belongsTo(() => EstadoSolicitud, {name: 'posee_un'})
-  id_estado_solicitud: number;
+  id_estado_solicitud?: number;
 
   @belongsTo(() => Modalidad, {name: 'pertenece_a'})
   id_modalidad: number;

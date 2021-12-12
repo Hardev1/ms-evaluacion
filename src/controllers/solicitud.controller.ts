@@ -1,4 +1,5 @@
 import {service} from '@loopback/core';
+import { authenticate } from '@loopback/authentication';
 import {
   Count,
   CountSchema,
@@ -27,6 +28,7 @@ import {
 } from '../repositories';
 import {NotificacionesService} from '../services';
 
+
 export class SolicitudController {
   constructor(
     @repository(SolicitudRepository)
@@ -39,6 +41,7 @@ export class SolicitudController {
     public servicioNotificaciones: NotificacionesService,
   ) {}
 
+  @authenticate("Administrador", "Auxiliar")
   @post('/crear-solicitud')
   @response(200, {
     description: 'Solicitud model instance',
@@ -59,33 +62,36 @@ export class SolicitudController {
   ): Promise<Solicitud | undefined> {
     let solicitudRepetida = await this.solicitudRepository.findOne({
       where: {
-        
         nombre_solicitud: solicitud.nombre_solicitud,
         id_tipo_solicitud: solicitud.id_tipo_solicitud,
         id_linea_investigacion: solicitud.id_linea_investigacion,
-        id_modalidad: solicitud.id_modalidad
+        id_modalidad: solicitud.id_modalidad,
       },
     });
     if (!solicitudRepetida) {
+      solicitud.id_estado_solicitud = 2;
       return this.solicitudRepository.create(solicitud);
-    }
-    this.solicitudRepository.create(solicitud);//Se debe configurar cual es el proponente que hace la solicitud repetida
+    } //Se debe configurar cual es el proponente que hace la solicitud repetida
     /* let solicitudProponente = await this.solicitudProponenteRepository.findOne({
       where: {id_solicitud: solicitudRepetida.id},
     });
     let proponente = await this.proponenteRepository.findById(
       solicitudProponente?.id_solicitud,
     ) */
-    solicitud.id_estado_solicitud = 3;
-    await this.solicitudRepository.save(solicitud);
-    /* let correo = new NotificacionCorreo();
+    else {
+      solicitud.id_estado_solicitud = 3;
+      await this.solicitudRepository.save(solicitud);
+      /* let correo = new NotificacionCorreo();
     correo.destinatario = proponente.email;
     correo.asunto = Keys.asuntoSolicitudExistente;
     correo.mensaje = `${Keys.saludo}, <b> ${proponente.primer_nombre}</b>: <br> ${Keys.mensajeSollicitudExitente1} <strong>${solicitud.nombre_solicitud}</strong> 
           ${Keys.mensajeSollicitudExitente2}`;
     this.servicioNotificaciones.EnviarCorreo(correo); */
+      return solicitud;
+    }
   }
 
+  @authenticate("Administrador", "Evaluador", "Auxiliar")
   @get('/solicituds/count')
   @response(200, {
     description: 'Solicitud model count',
@@ -97,6 +103,7 @@ export class SolicitudController {
     return this.solicitudRepository.count(where);
   }
 
+  @authenticate("Administrador", "Evaluador", "Auxiliar")
   @get('/solicitud')
   @response(200, {
     description: 'Array of Solicitud model instances',
@@ -115,6 +122,7 @@ export class SolicitudController {
     return this.solicitudRepository.find(filter);
   }
 
+  @authenticate("Administrador", "Auxiliar")
   @patch('/solicituds')
   @response(200, {
     description: 'Solicitud PATCH success count',
@@ -134,6 +142,7 @@ export class SolicitudController {
     return this.solicitudRepository.updateAll(solicitud, where);
   }
 
+  @authenticate("Administrador", "Evaluador", "Auxiliar")
   @get('/solicituds/{id}')
   @response(200, {
     description: 'Solicitud model instance',
@@ -151,6 +160,7 @@ export class SolicitudController {
     return this.solicitudRepository.findById(id, filter);
   }
 
+  @authenticate("Administrador", "Auxiliar")
   @patch('/solicituds/{id}')
   @response(204, {
     description: 'Solicitud PATCH success',
@@ -169,6 +179,7 @@ export class SolicitudController {
     await this.solicitudRepository.updateById(id, solicitud);
   }
 
+  @authenticate("Administrador", "Auxiliar")
   @put('/solicituds/{id}')
   @response(204, {
     description: 'Solicitud PUT success',
@@ -180,6 +191,7 @@ export class SolicitudController {
     await this.solicitudRepository.replaceById(id, solicitud);
   }
 
+  @authenticate("Administrador", "Auxiliar")
   @del('/solicituds/{id}')
   @response(204, {
     description: 'Solicitud DELETE success',

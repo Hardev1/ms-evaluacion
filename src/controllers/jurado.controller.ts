@@ -1,3 +1,4 @@
+import { authenticate } from '@loopback/authentication';
 import {
   Count,
   CountSchema,
@@ -20,12 +21,14 @@ import {
 import {Jurado} from '../models';
 import {JuradoRepository} from '../repositories';
 
+@authenticate("Administrador", "Auxiliar")
 export class JuradoController {
   constructor(
     @repository(JuradoRepository)
     public juradoRepository : JuradoRepository,
   ) {}
 
+  @authenticate.skip()
   @post('/jurado')
   @response(200, {
     description: 'Jurado model instance',
@@ -128,7 +131,7 @@ export class JuradoController {
   ): Promise<void> {
     await this.juradoRepository.updateById(id, jurado);
   }
-
+  
   @put('/jurado/{id}')
   @response(204, {
     description: 'Jurado PUT success',
@@ -140,6 +143,7 @@ export class JuradoController {
     await this.juradoRepository.replaceById(id, jurado);
   }
 
+  
   @del('/jurado/{id}')
   @response(204, {
     description: 'Jurado DELETE success',

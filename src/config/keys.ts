@@ -10,7 +10,7 @@ export namespace Keys {
   export const hashNotificacion = '123456d';
   export const urlCorreo = 'http://localhost:5000/correo';
   export const urlSms = 'http://localhost:5000/enviar-texto';
-  export const urlCrearUsuario = 'http://localhost:3001/crear-usuario'
+  export const urlCrearEvaluador = 'http://localhost:3001/crear-evaluador'
   export const asuntoCambioClave = 'Cambio de contraseña';
   export const saludo = 'Hola';
   export const destinoArg = 'destino';
@@ -33,7 +33,7 @@ export namespace Keys {
   let hashLength = 15;
   export let hash = createHash(hashLength);
   export let enlace = 
-  `<a href="http://localhost:4200${hash}" style="font-weight:bold;">Confirmar respuesta</a>`;
+  `http://localhost:4200/invitacion-evaluar/responder-invitacion`;
 
   export const nombreArg = 'nombre';
   export const apellidoArg = 'apellido';
@@ -42,8 +42,10 @@ export namespace Keys {
   export const emailArg = 'email';
   export const telefonoArg = 'telefono';
   
-  export const url_validar_token = "http://localhost:5001/validar-token"
-  export const rol_administrador = "614a59a2353790287cca0b39"
+  export const url_validar_token = "http://localhost:5000/validar-token";
+  export const rol_administrador = "61805a211f07963610f583a9";
+  export const rol_evaluador = "614a59a2353790287cca0b39";
+  export const rol_auxiliar = "618db07d8db6b0dee6d62fa0";
   export const arg_token = "token";
   export const arg_rol_validar = "rol"
 
@@ -52,9 +54,9 @@ export namespace Keys {
   export const carpetaResultadoSolicitud = '../../archivos/resultadoSolicitud'
   export const nombreCampoImagenProponente = 'file';
   export const extensionesPermitidasIMG: string[] = ['.PNG', '.JPG', '.JPEG', '.SVG'];
-  export const tamMaxImagenProponente = 1024 * 1024;
+  export const tamMaxImagenProponente = 7000 * 7000;
   export const nombreCampoSolicitud = 'file';
-  export const extensionesPermitidasDOC: string[] = ['.PDF', '.DOC', '.DOCX', '.XLS', '.XLSX'];
+  export const extensionesPermitidasDOC: string[] = ['.PDF', '.DOC', '.DOCX', '.XLS', '.XLSX', '.ZIP', '.RAR', '.TAR'];
 
   export const asuntoRecordatorio = "Recordatorio para evaluar";
   export const MensajeRecordatorio = "Recuerda evaluar esta solicitud que aceptaste calificar en la plataforma de evaluacion Ucaldas.";
