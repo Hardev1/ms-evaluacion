@@ -1,5 +1,5 @@
 import { authenticate } from '@loopback/authentication';
-import {service} from '@loopback/core';
+import { service } from '@loopback/core';
 import {
   Count,
   CountSchema,
@@ -29,7 +29,7 @@ import {
   SolicitudProponenteRepository,
   SolicitudRepository,
 } from '../repositories';
-import {NotificacionesService} from '../services';
+import { NotificacionesService } from '../services';
 
 @authenticate("Administrador", "Auxiliar")
 export class ProponenteSolicitudController {
@@ -42,7 +42,7 @@ export class ProponenteSolicitudController {
     protected solicitudRepository: SolicitudRepository,
     @service(NotificacionesService)
     public servicioNotificaciones: NotificacionesService,
-  ) {}
+  ) { }
 
   @get('/proponentes/{id}/solicituds', {
     responses: {
@@ -51,7 +51,7 @@ export class ProponenteSolicitudController {
           'Array of Proponente has many Solicitud through SolicitudProponente',
         content: {
           'application/json': {
-            schema: {type: 'array', items: getModelSchemaRef(Solicitud)},
+            schema: { type: 'array', items: getModelSchemaRef(Solicitud) },
           },
         },
       },
@@ -68,7 +68,7 @@ export class ProponenteSolicitudController {
     responses: {
       '200': {
         description: 'create a Solicitud model instance',
-        content: {'application/json': {schema: getModelSchemaRef(Solicitud)}},
+        content: { 'application/json': { schema: getModelSchemaRef(Solicitud) } },
       },
     },
   })
@@ -98,7 +98,7 @@ export class ProponenteSolicitudController {
       '200': {
         description: 'create a Rol model instance',
         content: {
-          'application/json': {schema: getModelSchemaRef(SolicitudProponente)},
+          'application/json': { schema: getModelSchemaRef(SolicitudProponente) },
         },
       },
     },
@@ -123,7 +123,7 @@ export class ProponenteSolicitudController {
       },
     }); //Se consulta si hay ya un registro existente
     let registro;
-        if (!registroRepetido) { //En caso de que no exista actualmente el registro, lo crea
+    if (!registroRepetido) { //En caso de que no exista actualmente el registro, lo crea
       registro = await this.solicitudProponenteRepository.create(datos);
       let proponente = await this.proponenteRepository.findById(
         datos.id_proponente,
@@ -132,17 +132,61 @@ export class ProponenteSolicitudController {
         datos.id_solicitud,
       );
       //Se almacenan los datos en variables para luego usar los datos tanto de la solicitud como del proponente para enviar correo
-      let correo = new NotificacionCorreo();
-      correo.destinatario = proponente.email;
-      correo.asunto = Keys.asuntoSolicitudProponente;
-      correo.mensaje = `${Keys.saludo}, <b> ${proponente.primer_nombre} ${proponente.primer_apellido}</b>: <br> ${Keys.mensaje1Solicitud} "${solicitud.nombre_solicitud}" ${Keys.mensaje2Solicitud} ${Keys.fechaFormat}
-     ${Keys.mensaje3Solicitud} "${solicitud.descripcion}" ${Keys.mensaje4Solicitud}`;
-
-      //Se consume el servicio local, el cual consume el microservicio, y luego se retorna el registro
-      this.servicioNotificaciones.EnviarCorreo(correo);
-      return registro;
+      if (solicitud.id_estado_solicitud != 3) {
+        let correo = new NotificacionCorreo();
+        correo.destinatario = proponente.email;
+        correo.asunto = Keys.asuntoSolicitudProponente;
+        correo.mensaje = `${Keys.saludo}, <b> ${proponente.primer_nombre} ${proponente.primer_apellido}</b>: <br> ${Keys.mensaje1Solicitud} "${solicitud.nombre_solicitud}" ${Keys.mensaje2Solicitud} ${Keys.fechaFormat}
+                          ${Keys.mensaje3Solicitud} "${solicitud.descripcion}" ${Keys.mensaje4Solicitud}`;
+        //Se consume el servicio local, el cual consume el microservicio, y luego se retorna el registro
+        this.servicioNotificaciones.EnviarCorreo(correo);
+        return registro;
+      }
+      let solOriginal = await this.solicitudRepository.findOne({
+        where: {
+          nombre_solicitud: solicitud.nombre_solicitud,
+          id_tipo_solicitud: solicitud.id_tipo_solicitud,
+          id_linea_investigacion: solicitud.id_linea_investigacion,
+          id_modalidad: solicitud.id_modalidad,
+          id_estado_solicitud: 1,
+        },
+      })
+      let solOriginal2 = await this.solicitudRepository.findOne({
+        where: {
+          nombre_solicitud: solicitud.nombre_solicitud,
+          id_tipo_solicitud: solicitud.id_tipo_solicitud,
+          id_linea_investigacion: solicitud.id_linea_investigacion,
+          id_modalidad: solicitud.id_modalidad,
+          id_estado_solicitud: 2,
+        },
+      })
+      if (solOriginal) {
+        registro.id_solicitud = solOriginal?.id
+        await this.solicitudProponenteRepository.save(registro);
+        await this.solicitudProponenteRepository.delete(solicitud);
+        let correo = new NotificacionCorreo();
+        correo.destinatario = proponente.email;
+        correo.asunto = Keys.asuntoSolicitudProponente;
+        correo.mensaje = `${Keys.saludo}, <b> ${proponente.primer_nombre} ${proponente.primer_apellido}</b>: <br> ${Keys.mensaje1Solicitud} "${solicitud.nombre_solicitud}" ${Keys.mensaje2Solicitud} ${Keys.fechaFormat}
+                          ${Keys.mensaje3Solicitud} "${solicitud.descripcion}" ${Keys.mensajeSolRepetida}`;
+        //Se consume el servicio local, el cual consume el microservicio, y luego se retorna el registro
+        this.servicioNotificaciones.EnviarCorreo(correo);
+        return registro;
+      }
+      else if (solOriginal2) {
+        registro.id_solicitud = solOriginal2?.id
+        await this.solicitudProponenteRepository.save(registro);
+        await this.solicitudProponenteRepository.delete(solicitud);
+        let correo = new NotificacionCorreo();
+        correo.destinatario = proponente.email;
+        correo.asunto = Keys.asuntoSolicitudProponente;
+        correo.mensaje = `${Keys.saludo}, <b> ${proponente.primer_nombre} ${proponente.primer_apellido}</b>: <br> ${Keys.mensaje1Solicitud} "${solicitud.nombre_solicitud}" ${Keys.mensaje2Solicitud} ${Keys.fechaFormat}
+                          ${Keys.mensaje3Solicitud} "${solicitud.descripcion}" ${Keys.mensajeSolRepetida}`;
+        //Se consume el servicio local, el cual consume el microservicio, y luego se retorna el registro
+        this.servicioNotificaciones.EnviarCorreo(correo);
+        return registro;
+      }
     }
-
     return registro;
   }
 
@@ -150,7 +194,7 @@ export class ProponenteSolicitudController {
     responses: {
       '200': {
         description: 'Proponente.Solicitud PATCH success count',
-        content: {'application/json': {schema: CountSchema}},
+        content: { 'application/json': { schema: CountSchema } },
       },
     },
   })
@@ -159,7 +203,7 @@ export class ProponenteSolicitudController {
     @requestBody({
       content: {
         'application/json': {
-          schema: getModelSchemaRef(Solicitud, {partial: true}),
+          schema: getModelSchemaRef(Solicitud, { partial: true }),
         },
       },
     })
@@ -174,7 +218,7 @@ export class ProponenteSolicitudController {
     responses: {
       '200': {
         description: 'Proponente.Solicitud DELETE success count',
-        content: {'application/json': {schema: CountSchema}},
+        content: { 'application/json': { schema: CountSchema } },
       },
     },
   })

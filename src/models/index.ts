@@ -20,3 +20,4 @@ export * from './notificacion-sms.model';
 export * from './notificacion-correo.model';
 export * from './invitacion-evaluar-conceptual.model';
 export * from './aceptar-solicitudes.model';
+export * from './estado-invitacion.model';

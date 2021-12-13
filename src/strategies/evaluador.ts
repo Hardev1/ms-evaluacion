@@ -5,7 +5,7 @@ import { Keys } from '../config/keys';
 import parseBearerToken from 'parse-bearer-token';
 const fetch = require('node-fetch');
 
-export class AdministratorStrategy implements AuthenticationStrategy {
+export class EvaluadorStrategy implements AuthenticationStrategy {
     name: string = 'Evaluador';
   
     constructor() {}
