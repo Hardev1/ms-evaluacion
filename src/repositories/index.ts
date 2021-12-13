@@ -16,3 +16,4 @@ export * from './proponente-departamento.repository';
 export * from './solicitud-proponente.repository';
 export * from './jurado-linea-investigacion.repository';
 export * from './solicitud-comite.repository';
+export * from './estado-invitacion.repository';

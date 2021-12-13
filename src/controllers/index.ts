@@ -22,3 +22,5 @@ export * from './invitacion-evaluar.controller';
 export * from './recordatorio.controller';
 export * from './resultado-evaluacion.controller';
 export * from './descargar-archivos.controller';
+export * from './invitacion-evaluar-estado-invitacion.controller';
+export * from './estado-invitacion.controller';

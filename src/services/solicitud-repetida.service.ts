@@ -4,10 +4,10 @@ import {Jurado} from '../models';
 const fetch = require('node-fetch');
 
 @injectable({scope: BindingScope.TRANSIENT})
-export class CrearUsuarioJuradoService {
+export class SolicitudRepetidaService {
   constructor(/* Add @inject to inject parameters */) {}
 
-  async CrearEvaluador(datos: Jurado) {
+  async NotificarRepetida(datos: Jurado) {
     const body = {
       nombre: datos.nombre,
       apellido: datos.apellido,

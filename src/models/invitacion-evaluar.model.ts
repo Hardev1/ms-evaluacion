@@ -1,6 +1,7 @@
 import {belongsTo, Entity, model, property} from '@loopback/repository';
 import {Jurado} from './jurado.model';
 import {Solicitud} from './solicitud.model';
+import {EstadoInvitacion} from './estado-invitacion.model';
 
 @model({
   settings: {
@@ -16,6 +17,12 @@ import {Solicitud} from './solicitud.model';
         entity: 'Solicitud',
         entityKey: 'id',
         foreignKey: 'id_solicitud',
+      },
+      fk_estado_invitacion_id_estado_invitacion: {
+        name: 'fk_estado_invitacion_id_estado_invitacion',
+        entity: 'EstadoInvitacion',
+        entityKey: 'id',
+        foreignKey: 'id_estado_invitacion',
       },
     },
   },
@@ -42,13 +49,6 @@ export class InvitacionEvaluar extends Entity {
   fecha_respuesta?: string;
 
   @property({
-    type: 'number',
-    required: false,
-    default: 0
-  })
-  estado_invitacion?: number;
-
-  @property({
     type: 'string',
     required: false,
     default: ""
@@ -66,6 +66,9 @@ export class InvitacionEvaluar extends Entity {
 
   @belongsTo(() => Solicitud, {name: 'tiene_una'})
   id_solicitud: number;
+
+  @belongsTo(() => EstadoInvitacion, {name: 'estado_invitacion'})
+  id_estado_invitacion: number;
 
   constructor(data?: Partial<InvitacionEvaluar>) {
     super(data);

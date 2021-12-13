@@ -22,6 +22,7 @@ export namespace Keys {
   export const mensaje3Solicitud = ', descrita como ';
   export const mensaje4Solicitud =
     'ha sido registrada en la plataforma de evaluación de la universidad de caldas, dentro de poco será calificada por nuestros jurados';
+  export const mensajeSolRepetida = 'ya se encontraba previamente en el sistema, consulta si ya se encuentra calificada en las oficinas';
   export const asuntoSolicitudProponente = 'Se ha registrado tu Solicitud';
   export const asuntoInvitacionEvaluar = 'Invitación solicitud a evaluar';
   export const mensaje1InvitacionEvaluar = 'Se te ha asignado la siguiente solicitud: ';

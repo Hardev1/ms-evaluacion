@@ -82,6 +82,7 @@ export class InvitacionEvaluarController {
         invitacionEvaluar.fecha_invitacion =
           fechaActual;
         invitacionEvaluar.hash = Keys.hash;
+        invitacionEvaluar.id_estado_invitacion = 1;
         /* let temporal =
           this.invitacionEvaluarRepository.create(invitacionEvaluar); */
         let jurado = await this.juradoRepository.findOne({
@@ -194,7 +195,7 @@ export class InvitacionEvaluarController {
       let juradoAceptado = await this.juradoRepository.findById(
         invitacion.id_jurado,
       );
-      invitacion.estado_invitacion = 1;
+      invitacion.id_estado_invitacion = 2;
       invitacion.fecha_respuesta = fechaActual;
       invitacion.observaciones = invitacionEvaluar.observaciones;
       await this.invitacionEvaluarRepository.save(invitacion);
@@ -203,7 +204,7 @@ export class InvitacionEvaluarController {
       let solicitud = await this.solicitudRepository.findById(
         invitacionEvaluar.id_solicitud,
       );
-      solicitud.id_estado_solicitud = 1;
+      solicitud.id_estado_solicitud = 2;
       await this.solicitudRepository.save(solicitud);
       return invitacion;
     }
@@ -234,7 +235,7 @@ export class InvitacionEvaluarController {
   ): Promise<InvitacionEvaluar> {
     let invitacion = await this.invitacionEvaluarRepository.findById(id);
     invitacion.fecha_respuesta = invitacionEvaluar.fecha_respuesta;
-    invitacion.estado_invitacion = 2;
+    invitacion.id_estado_invitacion = 3;
     invitacion.observaciones = invitacionEvaluar.observaciones;
     await this.invitacionEvaluarRepository.save(invitacion);
     return invitacion;
@@ -249,33 +250,6 @@ export class InvitacionEvaluarController {
     @requestBody() invitacionEvaluar: InvitacionEvaluar,
   ): Promise<void> {
     await this.invitacionEvaluarRepository.replaceById(id, invitacionEvaluar);
-  }
-  //actualiza el estado de la invitación a calificar cuando abre el correo aceptar/rechazar
-  @put('/cambiar-invitacion-evaluar/{id}')
-  @response(204, {
-    description: 'InvitacionEvaluar PUT success',
-  })
-  async cambiarInvit(
-    @param.path.number('id') id: number,
-    @requestBody() aceptarSolicitudes: AceptarSolicitudes,
-  ): Promise<void> {
-    let solicitud = await this.invitacionEvaluarRepository.findOne({
-      where: { id: aceptarSolicitudes.id_solicitud },
-    });
-    if (solicitud) {
-      if (aceptarSolicitudes.respuesta) {
-        solicitud.estado_invitacion = 1;
-      } else {
-        solicitud.estado_invitacion = 2;
-      }
-      if (aceptarSolicitudes && aceptarSolicitudes.descripcion) {
-        solicitud.observaciones = aceptarSolicitudes.descripcion;
-      }
-      await this.invitacionEvaluarRepository.replaceById(
-        aceptarSolicitudes.id_solicitud,
-        solicitud,
-      );
-    }
   }
 
   @del('/invitacion-evaluar/{id}')

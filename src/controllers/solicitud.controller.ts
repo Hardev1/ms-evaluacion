@@ -25,6 +25,7 @@ import {
   SolicitudRepository,
   SolicitudProponenteRepository,
   ProponenteRepository,
+  InvitacionEvaluarRepository,
 } from '../repositories';
 import {NotificacionesService} from '../services';
 
@@ -37,6 +38,8 @@ export class SolicitudController {
     public solicitudProponenteRepository: SolicitudProponenteRepository,
     @repository(ProponenteRepository)
     public proponenteRepository: ProponenteRepository,
+    @repository(InvitacionEvaluarRepository)
+    public invitacionRepository: InvitacionEvaluarRepository,
     @service(NotificacionesService)
     public servicioNotificaciones: NotificacionesService,
   ) {}
@@ -91,7 +94,7 @@ export class SolicitudController {
     }
   }
 
-  @authenticate("Administrador", "Evaluador", "Auxiliar")
+  @authenticate("Administrador", "Auxiliar", "Evaluador")
   @get('/solicituds/count')
   @response(200, {
     description: 'Solicitud model count',
@@ -103,7 +106,7 @@ export class SolicitudController {
     return this.solicitudRepository.count(where);
   }
 
-  @authenticate("Administrador", "Evaluador", "Auxiliar")
+  @authenticate("Administrador", "Auxiliar", "Evaluador")
   @get('/solicitud')
   @response(200, {
     description: 'Array of Solicitud model instances',
@@ -142,7 +145,7 @@ export class SolicitudController {
     return this.solicitudRepository.updateAll(solicitud, where);
   }
 
-  @authenticate("Administrador", "Evaluador", "Auxiliar")
+  @authenticate("Administrador", "Auxiliar")
   @get('/solicituds/{id}')
   @response(200, {
     description: 'Solicitud model instance',
