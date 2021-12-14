@@ -1,4 +1,4 @@
-import {service} from '@loopback/core';
+import { service } from '@loopback/core';
 import {
   Count,
   CountSchema,
@@ -18,7 +18,7 @@ import {
   requestBody,
   response,
 } from '@loopback/rest';
-import {ResultadoEvaluacion, NotificacionCorreo} from '../models';
+import { ResultadoEvaluacion, NotificacionCorreo } from '../models';
 import {
   ResultadoEvaluacionRepository,
   InvitacionEvaluarRepository,
@@ -27,8 +27,8 @@ import {
   SolicitudRepository,
   EstadoSolicitudRepository
 } from '../repositories';
-import {Keys} from '../config/keys';
-import {NotificacionesService} from '../services';
+import { Keys } from '../config/keys';
+import { NotificacionesService } from '../services';
 import { authenticate } from '@loopback/authentication';
 
 @authenticate("Administrador", "Evaluador")
@@ -48,13 +48,13 @@ export class ResultadoEvaluacionController {
     public estadoSolicitudRepository: EstadoSolicitudRepository,
     @service(NotificacionesService)
     public servicioNotificaciones: NotificacionesService,
-  ) {}
+  ) { }
 
   @post('/resultado-evaluacion')
   @response(200, {
     description: 'ResultadoEvaluacion model instance',
     content: {
-      'application/json': {schema: getModelSchemaRef(ResultadoEvaluacion)},
+      'application/json': { schema: getModelSchemaRef(ResultadoEvaluacion) },
     },
   })
   async create(
@@ -70,17 +70,15 @@ export class ResultadoEvaluacionController {
     })
     resultadoEvaluacion: Omit<ResultadoEvaluacion, 'id'>,
   ): Promise<ResultadoEvaluacion> {
-    let resultado =
-      this.resultadoEvaluacionRepository.create(resultadoEvaluacion);
-    //Se hacen varias consultas para encontrar la solicitud y poder cambiarle el estado
+    let fechaActual = new Date().toISOString();
+    resultadoEvaluacion.fecha = fechaActual;
+    let resultado = this.resultadoEvaluacionRepository.create(resultadoEvaluacion);
+    //Se hacen varias consultas para encontrar la invitacion y poder cambiarle el estado
     let invitacionEvaluar = await this.invitacionEvaluarRepository.findById(
       resultadoEvaluacion.id_invitacion_evaluar,
     );
-    let solicitud = await this.solicitudRepository.findById(
-      invitacionEvaluar.id_solicitud,
-    );
-    solicitud.id_estado_solicitud = 3;
-    await this.solicitudRepository.save(solicitud)
+    invitacionEvaluar.id_estado_invitacion = 4;
+    await this.invitacionEvaluarRepository.save(invitacionEvaluar)
     /*let solicitudProponente = await this.solicitudProponenteRepository.findOne({
       where: {id_solicitud: invitacionEvaluar.id_solicitud},
     });
@@ -99,7 +97,7 @@ export class ResultadoEvaluacionController {
   @get('/resultado-evaluacion/count')
   @response(200, {
     description: 'ResultadoEvaluacion model count',
-    content: {'application/json': {schema: CountSchema}},
+    content: { 'application/json': { schema: CountSchema } },
   })
   async count(
     @param.where(ResultadoEvaluacion) where?: Where<ResultadoEvaluacion>,
@@ -150,13 +148,13 @@ export class ResultadoEvaluacionController {
   @patch('/resultado-evaluacion')
   @response(200, {
     description: 'ResultadoEvaluacion PATCH success count',
-    content: {'application/json': {schema: CountSchema}},
+    content: { 'application/json': { schema: CountSchema } },
   })
   async updateAll(
     @requestBody({
       content: {
         'application/json': {
-          schema: getModelSchemaRef(ResultadoEvaluacion, {partial: true}),
+          schema: getModelSchemaRef(ResultadoEvaluacion, { partial: true }),
         },
       },
     })
@@ -182,7 +180,7 @@ export class ResultadoEvaluacionController {
   })
   async findById(
     @param.path.number('id') id: number,
-    @param.filter(ResultadoEvaluacion, {exclude: 'where'})
+    @param.filter(ResultadoEvaluacion, { exclude: 'where' })
     filter?: FilterExcludingWhere<ResultadoEvaluacion>,
   ): Promise<ResultadoEvaluacion> {
     return this.resultadoEvaluacionRepository.findById(id, filter);
@@ -197,7 +195,7 @@ export class ResultadoEvaluacionController {
     @requestBody({
       content: {
         'application/json': {
-          schema: getModelSchemaRef(ResultadoEvaluacion, {partial: true}),
+          schema: getModelSchemaRef(ResultadoEvaluacion, { partial: true }),
         },
       },
     })

@@ -29,9 +29,9 @@ export class ResultadoEvaluacion extends Entity {
 
   @property({
     type: 'date',
-    required: true,
+    required: false,
   })
-  fecha: string;
+  fecha?: string;
 
   @property({
     type: 'string',

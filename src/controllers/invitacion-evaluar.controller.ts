@@ -35,7 +35,6 @@ import {
 } from '../repositories';
 import { NotificacionesService, CrearUsuarioJuradoService } from '../services';
 
-@authenticate("Administrador", "Auxiliar")
 export class InvitacionEvaluarController {
   constructor(
     @repository(InvitacionEvaluarRepository)
@@ -156,6 +155,7 @@ export class InvitacionEvaluarController {
     return this.invitacionEvaluarRepository.updateAll(invitacionEvaluar, where);
   }
 
+  @authenticate.skip()
   @get('/invitacion-evaluar/{id}')
   @response(200, {
     description: 'InvitacionEvaluar model instance',
@@ -174,6 +174,7 @@ export class InvitacionEvaluarController {
   }
 
   //Punto 5, cuando se acepta o rechace una invitación a evaluar
+  @authenticate.skip()
   @patch('/invitacion-evaluar-aceptada/{id}')
   @response(204, {
     description: 'InvitacionEvaluar PATCH success',
@@ -218,6 +219,7 @@ export class InvitacionEvaluarController {
     return null;
   }
 
+  @authenticate.skip()
   @patch('/invitacion-evaluar-rechazada/{id}')
   @response(204, {
     description: 'InvitacionEvaluar PATCH success',

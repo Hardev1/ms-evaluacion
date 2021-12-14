@@ -30,7 +30,6 @@ import {Keys} from '../config/keys';
 import {NotificacionesService} from '../services';
 import { authenticate } from '@loopback/authentication';
 
-@authenticate("Administrador", "Auxiliar")
 export class RecordatorioController {
   constructor(
     @repository(RecordatorioRepository)
@@ -47,7 +46,7 @@ export class RecordatorioController {
     public servicioNotificaciones: NotificacionesService,
   ) {}
 
-  @post('/recordatorio-correo')
+  @post('/recordatorio-correo/')
   @response(200, {
     description: 'Recordatorio model instance',
     content: {'application/json': {schema: getModelSchemaRef(Recordatorio)}},
@@ -65,6 +64,9 @@ export class RecordatorioController {
     })
     recordatorio: Omit<Recordatorio, 'id'>,
   ): Promise<Recordatorio> {
+    let fechaActual = new Date().toISOString();
+    recordatorio.fecha = fechaActual;
+    recordatorio.tipo_recordatorio = 1;
     let recordatorioCorreo = this.recordatorioRepository.create(recordatorio);
     let invitacion = await this.invitacionEvaluarRepository.findById(
       recordatorio.id_invitacion_evaluar,
@@ -82,7 +84,7 @@ export class RecordatorioController {
     return recordatorioCorreo;
   }
 
-  @post('/recordatorio-llamada')
+  @post('/recordatorio-llamada/{id}')
   @response(200, {
     description: 'Recordatorio model instance',
     content: {'application/json': {schema: getModelSchemaRef(Recordatorio)}},
@@ -100,7 +102,10 @@ export class RecordatorioController {
     })
     recordatorio: Omit<Recordatorio, 'id'>,
   ): Promise<Recordatorio> {
-    let recordatorioLlamada = this.recordatorioRepository.create(recordatorio);
+    let fechaActual = new Date().toISOString();
+    recordatorio.fecha = fechaActual;
+    recordatorio.tipo_recordatorio = 2;
+    let recordatorioLlamada = this.recordatorioRepository.save(recordatorio);
     return recordatorioLlamada;
   }
 

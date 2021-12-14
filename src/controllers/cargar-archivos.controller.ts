@@ -1,5 +1,5 @@
-import {inject} from '@loopback/core';
-import {repository} from '@loopback/repository';
+import { inject } from '@loopback/core';
+import { repository } from '@loopback/repository';
 import { authenticate } from '@loopback/authentication';
 import {
   HttpErrors, param, post,
@@ -10,8 +10,8 @@ import {
 } from '@loopback/rest';
 import multer from 'multer';
 import path from 'path';
-import {Keys as Configuracion} from '../config/keys';
-import {ProponenteRepository, SolicitudRepository, ResultadoEvaluacionRepository} from '../repositories';
+import { Keys as Configuracion } from '../config/keys';
+import { ProponenteRepository, SolicitudRepository, ResultadoEvaluacionRepository } from '../repositories';
 
 export class CargarArchivoController {
   constructor(
@@ -57,7 +57,7 @@ export class CargarArchivoController {
         let proponente = await this.proponenteRepository.findById(id_proponente)
         proponente.fotografia = nombre_archivo
         await this.proponenteRepository.save(proponente)
-        return {filename: nombre_archivo};
+        return { filename: nombre_archivo };
       }
     }
     return res;
@@ -86,7 +86,7 @@ export class CargarArchivoController {
     if (res) {
       const nombre_archivo = response.req?.file?.filename;
       if (nombre_archivo) {
-        return {filename: nombre_archivo};
+        return { filename: nombre_archivo };
       }
     }
     return res;
@@ -115,7 +115,7 @@ export class CargarArchivoController {
     if (res) {
       const nombre_archivo = response.req?.file?.filename;
       if (nombre_archivo) {
-        return {filename: nombre_archivo};
+        return { filename: nombre_archivo };
       }
     }
     return res;
@@ -154,7 +154,7 @@ export class CargarArchivoController {
         let solicitud = await this.solicitudRepository.findById(id_solicitud)
         solicitud.archivo = nombre_archivo
         await this.solicitudRepository.save(solicitud)
-        return {filename: nombre_archivo};
+        return { filename: nombre_archivo };
       }
     }
     return res;
@@ -166,7 +166,7 @@ export class CargarArchivoController {
    * @param response
    * @param request
    */
-   @post('/CargarResultado/{id_resultado}', {
+  @post('/CargarResultado/{id_resultado}', {
     responses: {
       200: {
         content: {
@@ -190,15 +190,43 @@ export class CargarArchivoController {
     if (res) {
       const nombre_archivo = response.req?.file?.filename;
       if (nombre_archivo) {
-        let resultado= await this.resultadoEvaluacionRepository.findById(id_resultado)
+        let resultado = await this.resultadoEvaluacionRepository.findById(id_resultado)
         resultado.formato_diligenciado = nombre_archivo
         await this.resultadoEvaluacionRepository.save(resultado)
-        return {filename: nombre_archivo};
+        return { filename: nombre_archivo };
       }
     }
     return res;
   }
 
+  @post('/CargarTipoFormato', {
+    responses: {
+      200: {
+        content: {
+          'application/json': {
+            schema: {
+              type: 'object',
+            },
+          },
+        },
+        description: 'Función de carga de formato de un tipo de solicitud.',
+      },
+    },
+  })
+  async cargarTipoFormato(
+    @inject(RestBindings.Http.RESPONSE) response: Response,
+    @requestBody.file() request: Request
+  ): Promise<object | false> {
+    const rutaTipoFormato = path.join(__dirname, Configuracion.carpetaTipoFormato);
+    let res = await this.StoreFileToPath(rutaTipoFormato, Configuracion.nombreCampoImagenProponente, request, response, Configuracion.extensionesPermitidasDOC);
+    if (res) {
+      const nombre_archivo = response.req?.file?.filename;
+      if (nombre_archivo) {
+        return { filename: nombre_archivo };
+      }
+    }
+    return res;
+  }
 
 
   /**

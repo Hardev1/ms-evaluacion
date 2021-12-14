@@ -23,21 +23,15 @@ export class Recordatorio extends Entity {
 
   @property({
     type: 'date',
-    required: true,
+    required: false,
   })
-  fecha: string;
+  fecha?: string;
 
   @property({
     type: 'number',
     required: false,
   })
-  hora?: number;
-
-  @property({
-    type: 'number',
-    required: true,
-  })
-  tipo_recordatorio: number;
+  tipo_recordatorio?: number;
 
   @property({
     type: 'string',

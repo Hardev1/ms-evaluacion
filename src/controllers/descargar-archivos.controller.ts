@@ -1,6 +1,6 @@
 // import {inject} from '@loopback/core';
 
-import {inject} from '@loopback/core';
+import { inject } from '@loopback/core';
 import {
   get,
   HttpErrors, oas,
@@ -10,8 +10,8 @@ import {
 } from '@loopback/rest';
 import fs from 'fs';
 import path from 'path';
-import {promisify} from 'util';
-import {Keys as llaves} from '../config/keys';
+import { promisify } from 'util';
+import { Keys as llaves } from '../config/keys';
 import { authenticate } from '@loopback/authentication';
 
 const readdir = promisify(fs.readdir);
@@ -19,7 +19,6 @@ const readdir = promisify(fs.readdir);
 /**
  * A controller to handle file downloads using multipart/form-data media type
  */
-@authenticate("Administrador", "Auxiliar")
 export class DescargarArchivosController {
 
   constructor(
@@ -70,7 +69,10 @@ export class DescargarArchivosController {
   ) {
     const rutaCarpeta = this.ObtenerRutaDeCarpetaPorTipo(type);
     const archivo = this.ValidarNombreArchivo(rutaCarpeta, filename);
-    response.download(archivo, rutaCarpeta);
+    console.log("---");
+    console.log(archivo)
+    console.log("---");
+    response.download(archivo);
     return response;
   }
 
@@ -88,11 +90,14 @@ export class DescargarArchivosController {
       case 2:
         ruta = path.join(__dirname, llaves.carpetaSolicitud);
         break;
-      
+
       case 3:
         ruta = path.join(__dirname, llaves.carpetaResultadoSolicitud);
         break;
 
+      case 4:
+        ruta = path.join(__dirname, llaves.carpetaTipoFormato);
+        break;
     }
     return ruta;
   }

@@ -52,7 +52,8 @@ export namespace Keys {
 
   export const carpetaImagenProponente = "../../archivos/proponente";
   export const carpetaSolicitud = '../../archivos/solicitud';
-  export const carpetaResultadoSolicitud = '../../archivos/resultadoSolicitud'
+  export const carpetaResultadoSolicitud = '../../archivos/resultadoSolicitud';
+  export const carpetaTipoFormato = '../../archivos/tipo-formato';
   export const nombreCampoImagenProponente = 'file';
   export const extensionesPermitidasIMG: string[] = ['.PNG', '.JPG', '.JPEG', '.SVG'];
   export const tamMaxImagenProponente = 7000 * 7000;
