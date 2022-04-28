@@ -44,7 +44,7 @@ export class SolicitudController {
     public servicioNotificaciones: NotificacionesService,
   ) {}
 
-  @authenticate("Administrador", "Auxiliar")
+  //@authenticate("Administrador", "Auxiliar")
   @post('/crear-solicitud')
   @response(200, {
     description: 'Solicitud model instance',
@@ -82,7 +82,7 @@ export class SolicitudController {
       solicitudProponente?.id_solicitud,
     ) */
     else {
-      solicitud.id_estado_solicitud = 3;
+      solicitud.id_estado_solicitud = 4;
       await this.solicitudRepository.save(solicitud);
       /* let correo = new NotificacionCorreo();
     correo.destinatario = proponente.email;
@@ -94,7 +94,7 @@ export class SolicitudController {
     }
   }
 
-  @authenticate("Administrador", "Auxiliar", "Evaluador")
+  //@authenticate("Administrador", "Auxiliar", "Evaluador")
   @get('/solicituds/count')
   @response(200, {
     description: 'Solicitud model count',
@@ -106,7 +106,7 @@ export class SolicitudController {
     return this.solicitudRepository.count(where);
   }
 
-  @authenticate("Administrador", "Auxiliar", "Evaluador")
+  //@authenticate("Administrador", "Auxiliar", "Evaluador")
   @get('/solicitud')
   @response(200, {
     description: 'Array of Solicitud model instances',
@@ -125,7 +125,7 @@ export class SolicitudController {
     return this.solicitudRepository.find(filter);
   }
 
-  @authenticate("Administrador", "Auxiliar")
+  //@authenticate("Administrador", "Auxiliar")
   @patch('/solicituds')
   @response(200, {
     description: 'Solicitud PATCH success count',
@@ -145,7 +145,7 @@ export class SolicitudController {
     return this.solicitudRepository.updateAll(solicitud, where);
   }
 
-  @authenticate("Administrador", "Auxiliar")
+  //@authenticate("Administrador", "Auxiliar")
   @get('/solicituds/{id}')
   @response(200, {
     description: 'Solicitud model instance',
@@ -163,7 +163,7 @@ export class SolicitudController {
     return this.solicitudRepository.findById(id, filter);
   }
 
-  @authenticate("Administrador", "Auxiliar")
+  //@authenticate("Administrador", "Auxiliar")
   @patch('/solicituds/{id}')
   @response(204, {
     description: 'Solicitud PATCH success',
@@ -182,7 +182,7 @@ export class SolicitudController {
     await this.solicitudRepository.updateById(id, solicitud);
   }
 
-  @authenticate("Administrador", "Auxiliar")
+  //@authenticate("Administrador", "Auxiliar")
   @put('/solicituds/{id}')
   @response(204, {
     description: 'Solicitud PUT success',
@@ -194,7 +194,7 @@ export class SolicitudController {
     await this.solicitudRepository.replaceById(id, solicitud);
   }
 
-  @authenticate("Administrador", "Auxiliar")
+  //@authenticate("Administrador", "Auxiliar")
   @del('/solicituds/{id}')
   @response(204, {
     description: 'Solicitud DELETE success',

@@ -21,7 +21,7 @@ import {
 import {JuradoLineaInvestigacion} from '../models';
 import {JuradoLineaInvestigacionRepository} from '../repositories';
 
-@authenticate("Administrador", "Auxiliar")
+//@authenticate("Administrador", "Auxiliar")
 export class JuradoLineaInvestigacionController {
   constructor(
     @repository(JuradoLineaInvestigacionRepository)

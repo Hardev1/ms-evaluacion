@@ -36,9 +36,9 @@ export class Jurado extends Entity {
 
   @property({
     type: 'date',
-    required: true,
+    required: false,
   })
-  fechaNacimiento: string;
+  fechaNacimiento?: string;
 
   @property({
     type: 'string',

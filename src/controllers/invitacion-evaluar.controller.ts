@@ -205,7 +205,7 @@ export class InvitacionEvaluarController {
       let solicitud = await this.solicitudRepository.findById(
         invitacionEvaluar.id_solicitud,
       );
-      solicitud.id_estado_solicitud = 2;
+      solicitud.id_estado_solicitud = 1;
       await this.solicitudRepository.save(solicitud);
       return invitacion;
     }

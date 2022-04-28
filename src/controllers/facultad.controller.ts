@@ -21,7 +21,7 @@ import {
 import {Facultad} from '../models';
 import {FacultadRepository} from '../repositories';
 
-@authenticate("Administrador", "Auxiliar")
+//@authenticate("Administrador", "Auxiliar")
 export class FacultadController {
   constructor(
     @repository(FacultadRepository)

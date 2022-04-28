@@ -1,4 +1,4 @@
-import {Entity, model, property} from '@loopback/repository';
+import { Entity, model, property } from '@loopback/repository';
 
 @model()
 export class Modalidad extends Entity {
@@ -15,6 +15,11 @@ export class Modalidad extends Entity {
   })
   nombre: string;
 
+  @property({
+    type: 'string',
+    required: true,
+  })
+  formato: string;
 
   constructor(data?: Partial<Modalidad>) {
     super(data);

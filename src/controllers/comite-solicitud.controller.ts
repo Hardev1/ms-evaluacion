@@ -14,19 +14,21 @@ import {
   patch,
   post,
   requestBody,
+  response
 } from '@loopback/rest';
 import {
 Comite,
 SolicitudComite,
 Solicitud,
 } from '../models';
-import {ComiteRepository} from '../repositories';
+import {SolicitudComiteRepository, ComiteRepository} from '../repositories';
 import { authenticate } from '@loopback/authentication';
 
-@authenticate("Administrador", "Auxiliar")
+//@authenticate("Administrador", "Auxiliar")
 export class ComiteSolicitudController {
   constructor(
     @repository(ComiteRepository) protected comiteRepository: ComiteRepository,
+    @repository(SolicitudComiteRepository) protected solicitudComiteRepository: SolicitudComiteRepository,
   ) { }
 
   @get('/comites/{id}/solicituds', {
@@ -108,5 +110,23 @@ export class ComiteSolicitudController {
     @param.query.object('where', getWhereSchemaFor(Solicitud)) where?: Where<Solicitud>,
   ): Promise<Count> {
     return this.comiteRepository.posee_muchos(id).delete(where);
+  }
+
+  @get('/solicitud-comite')
+  @response(200, {
+    description: 'Array of solicitudComite model instances',
+    content: {
+      'application/json': {
+        schema: {
+          type: 'array',
+          items: getModelSchemaRef(SolicitudComite, {includeRelations: true}),
+        },
+      },
+    },
+  })
+  async encontrar(
+    @param.filter(SolicitudComite) filter?: Filter<SolicitudComite>,
+  ): Promise<SolicitudComite[]> {
+    return this.solicitudComiteRepository.find(filter);
   }
 }

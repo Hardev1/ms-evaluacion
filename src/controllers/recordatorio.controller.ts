@@ -66,7 +66,7 @@ export class RecordatorioController {
   ): Promise<Recordatorio> {
     let fechaActual = new Date().toISOString();
     recordatorio.fecha = fechaActual;
-    recordatorio.tipo_recordatorio = 1;
+    recordatorio.tipo_recordatorio = "Correo";
     let recordatorioCorreo = this.recordatorioRepository.create(recordatorio);
     let invitacion = await this.invitacionEvaluarRepository.findById(
       recordatorio.id_invitacion_evaluar,
@@ -84,7 +84,7 @@ export class RecordatorioController {
     return recordatorioCorreo;
   }
 
-  @post('/recordatorio-llamada/{id}')
+  @post('/recordatorio-llamada/')
   @response(200, {
     description: 'Recordatorio model instance',
     content: {'application/json': {schema: getModelSchemaRef(Recordatorio)}},
@@ -104,7 +104,7 @@ export class RecordatorioController {
   ): Promise<Recordatorio> {
     let fechaActual = new Date().toISOString();
     recordatorio.fecha = fechaActual;
-    recordatorio.tipo_recordatorio = 2;
+    recordatorio.tipo_recordatorio = "Llamada";
     let recordatorioLlamada = this.recordatorioRepository.save(recordatorio);
     return recordatorioLlamada;
   }

@@ -21,14 +21,14 @@ import {
 import {Departamento} from '../models';
 import {DepartamentoRepository} from '../repositories';
 
-@authenticate("Administrador", "Auxiliar")
+//@authenticate("Administrador", "Auxiliar")
 export class DepartamentoController {
   constructor(
     @repository(DepartamentoRepository)
     public departamentoRepository : DepartamentoRepository,
   ) {}
 
-  @authenticate("Administrador", "Auxiliar")
+  //@authenticate("Administrador", "Auxiliar")
   @post('/departamentos')
   @response(200, {
     description: 'Departamento model instance',
@@ -50,7 +50,7 @@ export class DepartamentoController {
     return this.departamentoRepository.create(departamento);
   }
 
-  @authenticate("Administrador", "Auxiliar")
+  //@authenticate("Administrador", "Auxiliar")
   @get('/departamentos/count')
   @response(200, {
     description: 'Departamento model count',
@@ -62,7 +62,7 @@ export class DepartamentoController {
     return this.departamentoRepository.count(where);
   }
 
-  @authenticate("Administrador", "Auxiliar")
+  //@authenticate("Administrador", "Auxiliar")
   @get('/departamentos')
   @response(200, {
     description: 'Array of Departamento model instances',
@@ -81,7 +81,7 @@ export class DepartamentoController {
     return this.departamentoRepository.find(filter);
   }
 
-  @authenticate("Administrador", "Auxiliar")
+  //@authenticate("Administrador", "Auxiliar")
   @patch('/departamentos')
   @response(200, {
     description: 'Departamento PATCH success count',
@@ -101,7 +101,7 @@ export class DepartamentoController {
     return this.departamentoRepository.updateAll(departamento, where);
   }
 
-  @authenticate("Administrador", "Auxiliar")
+  //@authenticate("Administrador", "Auxiliar")
   @get('/departamentos/{id}')
   @response(200, {
     description: 'Departamento model instance',
@@ -118,7 +118,7 @@ export class DepartamentoController {
     return this.departamentoRepository.findById(id, filter);
   }
   
-  @authenticate("Administrador", "Auxiliar")
+  //@authenticate("Administrador", "Auxiliar")
   @patch('/departamentos/{id}')
   @response(204, {
     description: 'Departamento PATCH success',
@@ -137,7 +137,7 @@ export class DepartamentoController {
     await this.departamentoRepository.updateById(id, departamento);
   }
 
-  @authenticate("Administrador", "Auxiliar")
+  //@authenticate("Administrador", "Auxiliar")
   @put('/departamentos/{id}')
   @response(204, {
     description: 'Departamento PUT success',
@@ -149,7 +149,7 @@ export class DepartamentoController {
     await this.departamentoRepository.replaceById(id, departamento);
   }
 
-  @authenticate("Administrador", "Auxiliar")
+  //@authenticate("Administrador", "Auxiliar")
   @del('/departamentos/{id}')
   @response(204, {
     description: 'Departamento DELETE success',

@@ -16,6 +16,7 @@ import {
   patch,
   post,
   requestBody,
+  response,
 } from '@loopback/rest';
 import { Keys } from '../config/keys';
 import {
@@ -31,7 +32,7 @@ import {
 } from '../repositories';
 import { NotificacionesService } from '../services';
 
-@authenticate("Administrador", "Auxiliar")
+//@authenticate("Administrador", "Auxiliar")
 export class ProponenteSolicitudController {
   constructor(
     @repository(ProponenteRepository)
@@ -43,26 +44,6 @@ export class ProponenteSolicitudController {
     @service(NotificacionesService)
     public servicioNotificaciones: NotificacionesService,
   ) { }
-
-  @get('/proponentes/{id}/solicituds', {
-    responses: {
-      '200': {
-        description:
-          'Array of Proponente has many Solicitud through SolicitudProponente',
-        content: {
-          'application/json': {
-            schema: { type: 'array', items: getModelSchemaRef(Solicitud) },
-          },
-        },
-      },
-    },
-  })
-  async find(
-    @param.path.number('id') id: number,
-    @param.query.object('filter') filter?: Filter<Solicitud>,
-  ): Promise<Solicitud[]> {
-    return this.proponenteRepository.tiene_muchas(id).find(filter);
-  }
 
   @post('/proponentes/{id}/solicituds', {
     responses: {
@@ -90,6 +71,24 @@ export class ProponenteSolicitudController {
       .tiene_muchas(id)
       .create(solicitud);
     return solicitudProponente;
+  }
+
+  @get('/solicitud-proponente')
+  @response(200, {
+    description: 'Array of SolicitudProponente model instances',
+    content: {
+      'application/json': {
+        schema: {
+          type: 'array',
+          items: getModelSchemaRef(SolicitudProponente, {includeRelations: true}),
+        },
+      },
+    },
+  })
+  async find(
+    @param.filter(SolicitudProponente) filter?: Filter<SolicitudProponente>,
+  ): Promise<SolicitudProponente[]> {
+    return this.solicitudProponenteRepository.find(filter);
   }
 
   // Punto 4

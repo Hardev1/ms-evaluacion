@@ -15,13 +15,6 @@ export class TipoSolicitud extends Entity {
   })
   nombre: string;
 
-  @property({
-    type: 'string',
-    required: true,
-  })
-  formato: string;
-
-
   constructor(data?: Partial<TipoSolicitud>) {
     super(data);
   }

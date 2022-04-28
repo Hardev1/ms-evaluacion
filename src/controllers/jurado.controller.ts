@@ -21,7 +21,7 @@ import {
 import {Jurado} from '../models';
 import {JuradoRepository} from '../repositories';
 
-@authenticate("Administrador", "Auxiliar")
+//@authenticate("Administrador", "Auxiliar")
 export class JuradoController {
   constructor(
     @repository(JuradoRepository)

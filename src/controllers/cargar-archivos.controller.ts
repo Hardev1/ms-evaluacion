@@ -209,7 +209,7 @@ export class CargarArchivoController {
             },
           },
         },
-        description: 'Función de carga de formato de un tipo de solicitud.',
+        description: 'Función de carga de formato de una modalidad.',
       },
     },
   })

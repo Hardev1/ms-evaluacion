@@ -33,7 +33,7 @@ import {TipoSolicitud} from './tipo-solicitud.model';
       },
     },
   },
-})
+} )
 export class Solicitud extends Entity {
   @property({
     type: 'number',

@@ -28,10 +28,10 @@ export class Recordatorio extends Entity {
   fecha?: string;
 
   @property({
-    type: 'number',
+    type: 'string',
     required: false,
   })
-  tipo_recordatorio?: number;
+  tipo_recordatorio?: string;
 
   @property({
     type: 'string',

@@ -15,19 +15,21 @@ import {
   patch,
   post,
   requestBody,
+  response,
 } from '@loopback/rest';
 import {
 Departamento,
 ProponenteDepartamento,
 Proponente,
 } from '../models';
-import {DepartamentoRepository} from '../repositories';
+import {DepartamentoRepository, ProponenteDepartamentoRepository} from '../repositories';
 
 
-@authenticate("Administrador", "Auxiliar")
+//@authenticate("Administrador", "Auxiliar")
 export class DepartamentoProponenteController {
   constructor(
     @repository(DepartamentoRepository) protected departamentoRepository: DepartamentoRepository,
+    @repository(ProponenteDepartamentoRepository) protected ProponenteDepartamentoRepository: ProponenteDepartamentoRepository,
   ) { }
 
   
@@ -48,6 +50,24 @@ export class DepartamentoProponenteController {
     @param.query.object('filter') filter?: Filter<Proponente>,
   ): Promise<Proponente[]> {
     return this.departamentoRepository.tienen_muchos(id).find(filter);
+  }
+
+  @get('/departamento-proponente')
+  @response(200, {
+    description: 'Array of ProponenteDepartamento model instances',
+    content: {
+      'application/json': {
+        schema: {
+          type: 'array',
+          items: getModelSchemaRef(ProponenteDepartamento, {includeRelations: true}),
+        },
+      },
+    },
+  })
+  async encontrar(
+    @param.filter(ProponenteDepartamento) filter?: Filter<ProponenteDepartamento>,
+  ): Promise<ProponenteDepartamento[]> {
+    return this.ProponenteDepartamentoRepository.find(filter);
   }
 
   @post('/departamentos/{id}/proponentes', {

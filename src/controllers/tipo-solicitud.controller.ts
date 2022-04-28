@@ -21,7 +21,7 @@ import {
 import {TipoSolicitud} from '../models';
 import {TipoSolicitudRepository} from '../repositories';
 
-@authenticate("Administrador", "Auxiliar")
+//@authenticate("Administrador", "Auxiliar")
 export class TipoSolicitudController {
   constructor(
     @repository(TipoSolicitudRepository)

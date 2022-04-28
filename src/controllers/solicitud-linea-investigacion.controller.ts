@@ -13,7 +13,7 @@ import {
 } from '../models';
 import {SolicitudRepository} from '../repositories';
 
-@authenticate("Administrador", "Auxiliar")
+//@authenticate("Administrador", "Auxiliar")
 export class SolicitudLineaInvestigacionController {
   constructor(
     @repository(SolicitudRepository)

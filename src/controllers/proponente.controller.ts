@@ -21,7 +21,7 @@ import {
 import {Proponente} from '../models';
 import {ProponenteRepository} from '../repositories';
 
-@authenticate("Administrador", "Auxiliar")
+//@authenticate("Administrador", "Auxiliar")
 export class ProponenteController {
   constructor(
     @repository(ProponenteRepository)

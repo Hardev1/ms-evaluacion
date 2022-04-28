@@ -17,7 +17,7 @@ import {Entity, model, property} from '@loopback/repository';
       },
     },
   },
-})
+} )
 export class SolicitudProponente extends Entity {
   @property({
     type: 'number',

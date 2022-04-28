@@ -21,7 +21,7 @@ import {
 import {TipoVinculacion} from '../models';
 import {TipoVinculacionRepository} from '../repositories';
 
-@authenticate("Administrador", "Auxiliar")
+//@authenticate("Administrador", "Auxiliar")
 export class TipoVinculacionController {
   constructor(
     @repository(TipoVinculacionRepository)

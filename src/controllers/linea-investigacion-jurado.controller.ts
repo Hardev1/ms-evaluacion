@@ -23,7 +23,7 @@ Jurado,
 } from '../models';
 import {LineaInvestigacionRepository} from '../repositories';
 
-@authenticate("Administrador", "Auxiliar")
+//@authenticate("Administrador", "Auxiliar")
 export class LineaInvestigacionJuradoController {
   constructor(
     @repository(LineaInvestigacionRepository) protected lineaInvestigacionRepository: LineaInvestigacionRepository,

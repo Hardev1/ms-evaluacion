@@ -16,7 +16,6 @@ export class AdministratorStrategy implements AuthenticationStrategy {
         if (token) {
             let url = `${Keys.url_validar_token}?${Keys.arg_token}=${token}&${Keys.arg_rol_validar}=${Keys.rol_administrador}`;
             let respuesta = "";
-            console.log(url);
             await fetch (url)
                 .then(async (res:any) => {
                     respuesta = await res.text();
