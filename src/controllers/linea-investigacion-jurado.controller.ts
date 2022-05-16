@@ -1,12 +1,12 @@
-import { authenticate } from '@loopback/authentication';
+import {authenticate} from '@loopback/authentication';
 import {
   Count,
   CountSchema,
   Filter,
   repository,
-  Where,
+  Where
 } from '@loopback/repository';
-  import {
+import {
   del,
   get,
   getModelSchemaRef,
@@ -14,16 +14,14 @@ import {
   param,
   patch,
   post,
-  requestBody,
+  requestBody
 } from '@loopback/rest';
 import {
-LineaInvestigacion,
-JuradoLineaInvestigacion,
-Jurado,
+  Jurado, LineaInvestigacion
 } from '../models';
 import {LineaInvestigacionRepository} from '../repositories';
 
-//@authenticate("Administrador", "Auxiliar")
+@authenticate("Administrador")
 export class LineaInvestigacionJuradoController {
   constructor(
     @repository(LineaInvestigacionRepository) protected lineaInvestigacionRepository: LineaInvestigacionRepository,

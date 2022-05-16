@@ -1,32 +1,26 @@
-import { authenticate } from '@loopback/authentication';
+import {authenticate} from '@loopback/authentication';
 import {
   Count,
   CountSchema,
   Filter,
   FilterExcludingWhere,
   repository,
-  Where,
+  Where
 } from '@loopback/repository';
 import {
-  post,
-  param,
-  get,
-  getModelSchemaRef,
-  patch,
-  put,
-  del,
-  requestBody,
-  response,
+  del, get,
+  getModelSchemaRef, param, patch, post, put, requestBody,
+  response
 } from '@loopback/rest';
 import {Jurado} from '../models';
 import {JuradoRepository} from '../repositories';
 
-//@authenticate("Administrador", "Auxiliar")
+@authenticate("Administrador")
 export class JuradoController {
   constructor(
     @repository(JuradoRepository)
-    public juradoRepository : JuradoRepository,
-  ) {}
+    public juradoRepository: JuradoRepository,
+  ) { }
 
   @authenticate.skip()
   @post('/jurado')
@@ -131,7 +125,7 @@ export class JuradoController {
   ): Promise<void> {
     await this.juradoRepository.updateById(id, jurado);
   }
-  
+
   @put('/jurado/{id}')
   @response(204, {
     description: 'Jurado PUT success',
@@ -143,7 +137,7 @@ export class JuradoController {
     await this.juradoRepository.replaceById(id, jurado);
   }
 
-  
+
   @del('/jurado/{id}')
   @response(204, {
     description: 'Jurado DELETE success',

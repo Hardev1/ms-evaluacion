@@ -1,45 +1,32 @@
-import { AuthenticationStrategy } from '@loopback/authentication';
-import { HttpErrors, Request } from '@loopback/rest';
-import { UserProfile } from '@loopback/security';
-import { Keys } from '../config/keys';
+import {AuthenticationStrategy} from '@loopback/authentication';
+import {HttpErrors, Request} from '@loopback/rest';
+import {UserProfile} from '@loopback/security';
 import parseBearerToken from 'parse-bearer-token';
+import {Keys} from '../config/keys';
 const fetch = require('node-fetch');
+var jwt = require('jsonwebtoken');
 
 export class AdministratorStrategy implements AuthenticationStrategy {
     name: string = 'Administrador';
-  
-    constructor() {}
-  
+
+    constructor() { }
+
     async authenticate(request: Request): Promise<UserProfile | undefined> {
         let token = parseBearerToken(request);
-        console.log(token)
         if (token) {
-            let url = `${Keys.url_validar_token}?${Keys.arg_token}=${token}&${Keys.arg_rol_validar}=${Keys.rol_administrador}`;
             let respuesta = "";
-            await fetch (url)
-                .then(async (res:any) => {
-                    respuesta = await res.text();
-                    console.log(respuesta)
-                })
-            switch (respuesta) {
-                case "OK":
-                    let perfil: UserProfile = Object.assign({
-                        admin: "OK"
-                    });
-                    return perfil;
-                    break;
-                
-                case "KO":
-                    throw new HttpErrors[401]("Tiene un token valido, sin embargo no es el rol correspondiente")
-                    break;
-
-                case "":
-                    throw new HttpErrors[401]("El token enviado no existe")
-                    break;
+            try {
+                var decoded = jwt.verify(token, Keys.JWT_SECRET_KEY);
+                let perfil: UserProfile = Object.assign({
+                    admin: "OK"
+                });
+                return perfil;
+            } catch {
+                throw new HttpErrors[401]("Tiene un token valido, sin embargo no es el rol correspondiente")
             }
         }
         else {
             throw new HttpErrors[401]("La solicitud no posee un token")
         }
     }
-  }
+}

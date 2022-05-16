@@ -1,32 +1,26 @@
-import { authenticate } from '@loopback/authentication';
+import {authenticate} from '@loopback/authentication';
 import {
   Count,
   CountSchema,
   Filter,
   FilterExcludingWhere,
   repository,
-  Where,
+  Where
 } from '@loopback/repository';
 import {
-  post,
-  param,
-  get,
-  getModelSchemaRef,
-  patch,
-  put,
-  del,
-  requestBody,
-  response,
+  del, get,
+  getModelSchemaRef, param, patch, post, put, requestBody,
+  response
 } from '@loopback/rest';
 import {TipoSolicitud} from '../models';
 import {TipoSolicitudRepository} from '../repositories';
 
-//@authenticate("Administrador", "Auxiliar")
+@authenticate("Administrador")
 export class TipoSolicitudController {
   constructor(
     @repository(TipoSolicitudRepository)
-    public tipoSolicitudRepository : TipoSolicitudRepository,
-  ) {}
+    public tipoSolicitudRepository: TipoSolicitudRepository,
+  ) { }
 
   @post('/tipo-solicituds')
   @response(200, {

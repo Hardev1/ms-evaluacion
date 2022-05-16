@@ -1,19 +1,18 @@
-import { authenticate } from '@loopback/authentication';
+import {authenticate} from '@loopback/authentication';
 import {
-  repository,
+  repository
 } from '@loopback/repository';
 import {
-  param,
   get,
-  getModelSchemaRef,
+  getModelSchemaRef, param
 } from '@loopback/rest';
 import {
   Departamento,
-  Facultad,
+  Facultad
 } from '../models';
 import {DepartamentoRepository} from '../repositories';
 
-//@authenticate("Administrador", "Auxiliar")
+@authenticate("Administrador")
 export class DepartamentoFacultadController {
   constructor(
     @repository(DepartamentoRepository)

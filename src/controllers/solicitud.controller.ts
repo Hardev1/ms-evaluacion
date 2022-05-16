@@ -1,31 +1,21 @@
+import {authenticate} from '@loopback/authentication';
 import {service} from '@loopback/core';
-import { authenticate } from '@loopback/authentication';
 import {
   Count,
   CountSchema,
   Filter,
   FilterExcludingWhere,
   repository,
-  Where,
+  Where
 } from '@loopback/repository';
 import {
-  post,
-  param,
-  get,
-  getModelSchemaRef,
-  patch,
-  put,
-  del,
-  requestBody,
-  response,
+  del, get,
+  getModelSchemaRef, param, patch, post, put, requestBody,
+  response
 } from '@loopback/rest';
-import {Solicitud, NotificacionCorreo, SolicitudProponente} from '../models';
-import {Keys} from '../config/keys';
+import {Solicitud} from '../models';
 import {
-  SolicitudRepository,
-  SolicitudProponenteRepository,
-  ProponenteRepository,
-  InvitacionEvaluarRepository,
+  InvitacionEvaluarRepository, ProponenteRepository, SolicitudProponenteRepository, SolicitudRepository
 } from '../repositories';
 import {NotificacionesService} from '../services';
 
@@ -42,9 +32,9 @@ export class SolicitudController {
     public invitacionRepository: InvitacionEvaluarRepository,
     @service(NotificacionesService)
     public servicioNotificaciones: NotificacionesService,
-  ) {}
+  ) { }
 
-  //@authenticate("Administrador", "Auxiliar")
+  @authenticate("Administrador")
   @post('/crear-solicitud')
   @response(200, {
     description: 'Solicitud model instance',
@@ -87,14 +77,14 @@ export class SolicitudController {
       /* let correo = new NotificacionCorreo();
     correo.destinatario = proponente.email;
     correo.asunto = Keys.asuntoSolicitudExistente;
-    correo.mensaje = `${Keys.saludo}, <b> ${proponente.primer_nombre}</b>: <br> ${Keys.mensajeSollicitudExitente1} <strong>${solicitud.nombre_solicitud}</strong> 
+    correo.mensaje = `${Keys.saludo}, <b> ${proponente.primer_nombre}</b>: <br> ${Keys.mensajeSollicitudExitente1} <strong>${solicitud.nombre_solicitud}</strong>
           ${Keys.mensajeSollicitudExitente2}`;
     this.servicioNotificaciones.EnviarCorreo(correo); */
       return solicitud;
     }
   }
 
-  //@authenticate("Administrador", "Auxiliar", "Evaluador")
+  @authenticate("Administrador", "Auxiliar", "Evaluador")
   @get('/solicituds/count')
   @response(200, {
     description: 'Solicitud model count',
@@ -106,7 +96,7 @@ export class SolicitudController {
     return this.solicitudRepository.count(where);
   }
 
-  //@authenticate("Administrador", "Auxiliar", "Evaluador")
+  @authenticate("Administrador", "Auxiliar", "Evaluador")
   @get('/solicitud')
   @response(200, {
     description: 'Array of Solicitud model instances',
@@ -125,7 +115,7 @@ export class SolicitudController {
     return this.solicitudRepository.find(filter);
   }
 
-  //@authenticate("Administrador", "Auxiliar")
+  @authenticate("Administrador")
   @patch('/solicituds')
   @response(200, {
     description: 'Solicitud PATCH success count',
@@ -145,7 +135,7 @@ export class SolicitudController {
     return this.solicitudRepository.updateAll(solicitud, where);
   }
 
-  //@authenticate("Administrador", "Auxiliar")
+  @authenticate("Administrador")
   @get('/solicituds/{id}')
   @response(200, {
     description: 'Solicitud model instance',
@@ -163,7 +153,7 @@ export class SolicitudController {
     return this.solicitudRepository.findById(id, filter);
   }
 
-  //@authenticate("Administrador", "Auxiliar")
+  @authenticate("Administrador")
   @patch('/solicituds/{id}')
   @response(204, {
     description: 'Solicitud PATCH success',
@@ -182,7 +172,7 @@ export class SolicitudController {
     await this.solicitudRepository.updateById(id, solicitud);
   }
 
-  //@authenticate("Administrador", "Auxiliar")
+  @authenticate("Administrador")
   @put('/solicituds/{id}')
   @response(204, {
     description: 'Solicitud PUT success',
@@ -194,7 +184,7 @@ export class SolicitudController {
     await this.solicitudRepository.replaceById(id, solicitud);
   }
 
-  //@authenticate("Administrador", "Auxiliar")
+  @authenticate("Administrador")
   @del('/solicituds/{id}')
   @response(204, {
     description: 'Solicitud DELETE success',

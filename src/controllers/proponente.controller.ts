@@ -1,32 +1,26 @@
-import { authenticate } from '@loopback/authentication';
+import {authenticate} from '@loopback/authentication';
 import {
   Count,
   CountSchema,
   Filter,
   FilterExcludingWhere,
   repository,
-  Where,
+  Where
 } from '@loopback/repository';
 import {
-  post,
-  param,
-  get,
-  getModelSchemaRef,
-  patch,
-  put,
-  del,
-  requestBody,
-  response,
+  del, get,
+  getModelSchemaRef, param, patch, post, put, requestBody,
+  response
 } from '@loopback/rest';
 import {Proponente} from '../models';
 import {ProponenteRepository} from '../repositories';
 
-//@authenticate("Administrador", "Auxiliar")
+@authenticate("Administrador")
 export class ProponenteController {
   constructor(
     @repository(ProponenteRepository)
-    public proponenteRepository : ProponenteRepository,
-  ) {}
+    public proponenteRepository: ProponenteRepository,
+  ) { }
 
   @post('/proponentes')
   @response(200, {

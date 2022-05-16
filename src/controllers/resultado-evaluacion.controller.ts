@@ -1,37 +1,25 @@
-import { service } from '@loopback/core';
+import {authenticate} from '@loopback/authentication';
+import {service} from '@loopback/core';
 import {
   Count,
   CountSchema,
   Filter,
   FilterExcludingWhere,
   repository,
-  Where,
+  Where
 } from '@loopback/repository';
 import {
-  post,
-  param,
-  get,
-  getModelSchemaRef,
-  patch,
-  put,
-  del,
-  requestBody,
-  response,
+  del, get,
+  getModelSchemaRef, param, patch, post, put, requestBody,
+  response
 } from '@loopback/rest';
-import { ResultadoEvaluacion, NotificacionCorreo } from '../models';
+import {ResultadoEvaluacion} from '../models';
 import {
-  ResultadoEvaluacionRepository,
-  InvitacionEvaluarRepository,
-  SolicitudProponenteRepository,
-  ProponenteRepository,
-  SolicitudRepository,
-  EstadoSolicitudRepository
+  EstadoSolicitudRepository, InvitacionEvaluarRepository, ProponenteRepository, ResultadoEvaluacionRepository, SolicitudProponenteRepository, SolicitudRepository
 } from '../repositories';
-import { Keys } from '../config/keys';
-import { NotificacionesService } from '../services';
-import { authenticate } from '@loopback/authentication';
+import {NotificacionesService} from '../services';
 
-//@authenticate("Administrador", "Evaluador")
+@authenticate("Administrador", "Evaluador")
 export class ResultadoEvaluacionController {
   constructor(
     @repository(ResultadoEvaluacionRepository)
@@ -54,7 +42,7 @@ export class ResultadoEvaluacionController {
   @response(200, {
     description: 'ResultadoEvaluacion model instance',
     content: {
-      'application/json': { schema: getModelSchemaRef(ResultadoEvaluacion) },
+      'application/json': {schema: getModelSchemaRef(ResultadoEvaluacion)},
     },
   })
   async create(
@@ -88,7 +76,7 @@ export class ResultadoEvaluacionController {
      let correo = new NotificacionCorreo();
     correo.destinatario = proponente.email;
     correo.asunto = Keys.asuntoResultado;
-    correo.mensaje = `${Keys.saludo}, <b> ${proponente.primer_nombre}</b>: <br> ${Keys.mensajeResultado1} <strong>${solicitud.nombre_solicitud}</strong> 
+    correo.mensaje = `${Keys.saludo}, <b> ${proponente.primer_nombre}</b>: <br> ${Keys.mensajeResultado1} <strong>${solicitud.nombre_solicitud}</strong>
           ${Keys.mensajeResultado2} ${resultadoEvaluacion.descripcion}`;
     this.servicioNotificaciones.EnviarCorreo(correo); */
     return resultado;
@@ -97,7 +85,7 @@ export class ResultadoEvaluacionController {
   @get('/resultado-evaluacion/count')
   @response(200, {
     description: 'ResultadoEvaluacion model count',
-    content: { 'application/json': { schema: CountSchema } },
+    content: {'application/json': {schema: CountSchema}},
   })
   async count(
     @param.where(ResultadoEvaluacion) where?: Where<ResultadoEvaluacion>,
@@ -148,13 +136,13 @@ export class ResultadoEvaluacionController {
   @patch('/resultado-evaluacion')
   @response(200, {
     description: 'ResultadoEvaluacion PATCH success count',
-    content: { 'application/json': { schema: CountSchema } },
+    content: {'application/json': {schema: CountSchema}},
   })
   async updateAll(
     @requestBody({
       content: {
         'application/json': {
-          schema: getModelSchemaRef(ResultadoEvaluacion, { partial: true }),
+          schema: getModelSchemaRef(ResultadoEvaluacion, {partial: true}),
         },
       },
     })
@@ -180,7 +168,7 @@ export class ResultadoEvaluacionController {
   })
   async findById(
     @param.path.number('id') id: number,
-    @param.filter(ResultadoEvaluacion, { exclude: 'where' })
+    @param.filter(ResultadoEvaluacion, {exclude: 'where'})
     filter?: FilterExcludingWhere<ResultadoEvaluacion>,
   ): Promise<ResultadoEvaluacion> {
     return this.resultadoEvaluacionRepository.findById(id, filter);
@@ -195,7 +183,7 @@ export class ResultadoEvaluacionController {
     @requestBody({
       content: {
         'application/json': {
-          schema: getModelSchemaRef(ResultadoEvaluacion, { partial: true }),
+          schema: getModelSchemaRef(ResultadoEvaluacion, {partial: true}),
         },
       },
     })

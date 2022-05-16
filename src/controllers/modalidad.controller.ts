@@ -1,32 +1,26 @@
-import { authenticate } from '@loopback/authentication';
+import {authenticate} from '@loopback/authentication';
 import {
   Count,
   CountSchema,
   Filter,
   FilterExcludingWhere,
   repository,
-  Where,
+  Where
 } from '@loopback/repository';
 import {
-  post,
-  param,
-  get,
-  getModelSchemaRef,
-  patch,
-  put,
-  del,
-  requestBody,
-  response,
+  del, get,
+  getModelSchemaRef, param, patch, post, put, requestBody,
+  response
 } from '@loopback/rest';
 import {Modalidad} from '../models';
 import {ModalidadRepository} from '../repositories';
 
-//@authenticate("Administrador", "Auxiliar")
+@authenticate("Administrador")
 export class ModalidadController {
   constructor(
     @repository(ModalidadRepository)
-    public modalidadRepository : ModalidadRepository,
-  ) {}
+    public modalidadRepository: ModalidadRepository,
+  ) { }
 
   @post('/modalidads')
   @response(200, {

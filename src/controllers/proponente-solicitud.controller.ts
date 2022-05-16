@@ -1,11 +1,11 @@
-import { authenticate } from '@loopback/authentication';
-import { service } from '@loopback/core';
+import {authenticate} from '@loopback/authentication';
+import {service} from '@loopback/core';
 import {
   Count,
   CountSchema,
   Filter,
   repository,
-  Where,
+  Where
 } from '@loopback/repository';
 import {
   del,
@@ -16,23 +16,23 @@ import {
   patch,
   post,
   requestBody,
-  response,
+  response
 } from '@loopback/rest';
-import { Keys } from '../config/keys';
+import {Keys} from '../config/keys';
 import {
   NotificacionCorreo,
   Proponente,
   Solicitud,
-  SolicitudProponente,
+  SolicitudProponente
 } from '../models';
 import {
   ProponenteRepository,
   SolicitudProponenteRepository,
-  SolicitudRepository,
+  SolicitudRepository
 } from '../repositories';
-import { NotificacionesService } from '../services';
+import {NotificacionesService} from '../services';
 
-//@authenticate("Administrador", "Auxiliar")
+@authenticate("Administrador")
 export class ProponenteSolicitudController {
   constructor(
     @repository(ProponenteRepository)
@@ -49,7 +49,7 @@ export class ProponenteSolicitudController {
     responses: {
       '200': {
         description: 'create a Solicitud model instance',
-        content: { 'application/json': { schema: getModelSchemaRef(Solicitud) } },
+        content: {'application/json': {schema: getModelSchemaRef(Solicitud)}},
       },
     },
   })
@@ -97,7 +97,7 @@ export class ProponenteSolicitudController {
       '200': {
         description: 'create a Rol model instance',
         content: {
-          'application/json': { schema: getModelSchemaRef(SolicitudProponente) },
+          'application/json': {schema: getModelSchemaRef(SolicitudProponente)},
         },
       },
     },
@@ -193,7 +193,7 @@ export class ProponenteSolicitudController {
     responses: {
       '200': {
         description: 'Proponente.Solicitud PATCH success count',
-        content: { 'application/json': { schema: CountSchema } },
+        content: {'application/json': {schema: CountSchema}},
       },
     },
   })
@@ -202,7 +202,7 @@ export class ProponenteSolicitudController {
     @requestBody({
       content: {
         'application/json': {
-          schema: getModelSchemaRef(Solicitud, { partial: true }),
+          schema: getModelSchemaRef(Solicitud, {partial: true}),
         },
       },
     })
@@ -217,7 +217,7 @@ export class ProponenteSolicitudController {
     responses: {
       '200': {
         description: 'Proponente.Solicitud DELETE success count',
-        content: { 'application/json': { schema: CountSchema } },
+        content: {'application/json': {schema: CountSchema}},
       },
     },
   })

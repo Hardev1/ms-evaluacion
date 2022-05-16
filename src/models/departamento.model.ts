@@ -3,7 +3,7 @@ import {
   Entity,
   hasMany,
   model,
-  property,
+  property
 } from '@loopback/repository';
 import {Facultad} from './facultad.model';
 import {ProponenteDepartamento} from './proponente-departamento.model';
@@ -28,6 +28,12 @@ export class Departamento extends Entity {
     generated: true,
   })
   id?: number;
+
+  @property({
+    type: 'string',
+    required: true,
+  })
+  codigo: string;
 
   @property({
     type: 'string',

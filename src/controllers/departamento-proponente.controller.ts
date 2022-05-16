@@ -1,12 +1,12 @@
-import { authenticate } from '@loopback/authentication';
+import {authenticate} from '@loopback/authentication';
 import {
   Count,
   CountSchema,
   Filter,
   repository,
-  Where,
+  Where
 } from '@loopback/repository';
-  import {
+import {
   del,
   get,
   getModelSchemaRef,
@@ -15,24 +15,22 @@ import {
   patch,
   post,
   requestBody,
-  response,
+  response
 } from '@loopback/rest';
 import {
-Departamento,
-ProponenteDepartamento,
-Proponente,
+  Departamento, Proponente, ProponenteDepartamento
 } from '../models';
 import {DepartamentoRepository, ProponenteDepartamentoRepository} from '../repositories';
 
 
-//@authenticate("Administrador", "Auxiliar")
+@authenticate("Administrador")
 export class DepartamentoProponenteController {
   constructor(
     @repository(DepartamentoRepository) protected departamentoRepository: DepartamentoRepository,
     @repository(ProponenteDepartamentoRepository) protected ProponenteDepartamentoRepository: ProponenteDepartamentoRepository,
   ) { }
 
-  
+
   @get('/departamentos/{id}/proponentes', {
     responses: {
       '200': {

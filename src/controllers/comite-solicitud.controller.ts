@@ -1,11 +1,12 @@
+import {authenticate} from '@loopback/authentication';
 import {
   Count,
   CountSchema,
   Filter,
   repository,
-  Where,
+  Where
 } from '@loopback/repository';
-  import {
+import {
   del,
   get,
   getModelSchemaRef,
@@ -17,14 +18,11 @@ import {
   response
 } from '@loopback/rest';
 import {
-Comite,
-SolicitudComite,
-Solicitud,
+  Comite, Solicitud, SolicitudComite
 } from '../models';
-import {SolicitudComiteRepository, ComiteRepository} from '../repositories';
-import { authenticate } from '@loopback/authentication';
+import {ComiteRepository, SolicitudComiteRepository} from '../repositories';
 
-//@authenticate("Administrador", "Auxiliar")
+@authenticate("Administrador")
 export class ComiteSolicitudController {
   constructor(
     @repository(ComiteRepository) protected comiteRepository: ComiteRepository,

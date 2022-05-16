@@ -1,34 +1,28 @@
-import { authenticate } from '@loopback/authentication';
+import {authenticate} from '@loopback/authentication';
 import {
   Count,
   CountSchema,
   Filter,
   FilterExcludingWhere,
   repository,
-  Where,
+  Where
 } from '@loopback/repository';
 import {
-  post,
-  param,
-  get,
-  getModelSchemaRef,
-  patch,
-  put,
-  del,
-  requestBody,
-  response,
+  del, get,
+  getModelSchemaRef, param, patch, post, put, requestBody,
+  response
 } from '@loopback/rest';
 import {EstadoSolicitud} from '../models';
 import {EstadoSolicitudRepository} from '../repositories';
 
-//@authenticate("Administrador", "Auxiliar")
+@authenticate("Administrador")
 export class EstadoSolicitudController {
   constructor(
     @repository(EstadoSolicitudRepository)
-    public estadoSolicitudRepository : EstadoSolicitudRepository,
-  ) {}
-  
-  //@authenticate("Administrador", "Auxiliar")
+    public estadoSolicitudRepository: EstadoSolicitudRepository,
+  ) { }
+
+  @authenticate("Administrador")
   @post('/estado-solicituds')
   @response(200, {
     description: 'EstadoSolicitud model instance',
@@ -50,7 +44,7 @@ export class EstadoSolicitudController {
     return this.estadoSolicitudRepository.create(estadoSolicitud);
   }
 
-  //@authenticate("Administrador", "Auxiliar")
+  @authenticate("Administrador")
   @get('/estado-solicituds/count')
   @response(200, {
     description: 'EstadoSolicitud model count',

@@ -30,11 +30,11 @@ export namespace Keys {
   export const mensaje3InvitacionEvaluar = 'En caso de aceptar/rechazar calificar la solicitud asignada, haz click aquí: ';
   export const fecha = new Date();
   export let fechaFormat = date.format(fecha, 'YYYY/MM/DD HH:mm:ss');
-  
+
   let hashLength = 15;
   export let hash = createHash(hashLength);
-  export let enlace = 
-  `http://localhost:4200/invitacion-evaluar/responder-invitacion`;
+  export let enlace =
+    `http://localhost:4200/invitacion-evaluar/responder-invitacion`;
 
   export const nombreArg = 'nombre';
   export const apellidoArg = 'apellido';
@@ -42,7 +42,7 @@ export namespace Keys {
   export const fechaNacimientoArg = 'fechaNacimiento';
   export const emailArg = 'email';
   export const telefonoArg = 'telefono';
-  
+
   export const url_validar_token = "http://localhost:5000/validar-token";
   export const rol_administrador = "61805a211f07963610f583a9";
   export const rol_evaluador = "614a59a2353790287cca0b39";
@@ -70,4 +70,6 @@ export namespace Keys {
   export const asuntoSolicitudExistente = "Solicitud ya existente";
   export const mensajeSollicitudExitente1 = "La solicutud ";
   export const mensajeSollicitudExitente2 = "Ya ha sido evaluada en la plataforma previamente";
+
+  export const JWT_SECRET_KEY = "Ucaldas@2022*";
 }

@@ -1,34 +1,28 @@
-import { authenticate } from '@loopback/authentication';
+import {authenticate} from '@loopback/authentication';
 import {
   Count,
   CountSchema,
   Filter,
   FilterExcludingWhere,
   repository,
-  Where,
+  Where
 } from '@loopback/repository';
 import {
-  post,
-  param,
-  get,
-  getModelSchemaRef,
-  patch,
-  put,
-  del,
-  requestBody,
-  response,
+  del, get,
+  getModelSchemaRef, param, patch, post, put, requestBody,
+  response
 } from '@loopback/rest';
 import {Departamento} from '../models';
 import {DepartamentoRepository} from '../repositories';
 
-//@authenticate("Administrador", "Auxiliar")
+@authenticate("Administrador")
 export class DepartamentoController {
   constructor(
     @repository(DepartamentoRepository)
-    public departamentoRepository : DepartamentoRepository,
-  ) {}
+    public departamentoRepository: DepartamentoRepository,
+  ) { }
 
-  //@authenticate("Administrador", "Auxiliar")
+  @authenticate('ValidateStretagy')
   @post('/departamentos')
   @response(200, {
     description: 'Departamento model instance',
@@ -50,7 +44,7 @@ export class DepartamentoController {
     return this.departamentoRepository.create(departamento);
   }
 
-  //@authenticate("Administrador", "Auxiliar")
+  @authenticate("Administrador")
   @get('/departamentos/count')
   @response(200, {
     description: 'Departamento model count',
@@ -62,7 +56,7 @@ export class DepartamentoController {
     return this.departamentoRepository.count(where);
   }
 
-  //@authenticate("Administrador", "Auxiliar")
+  @authenticate("Administrador")
   @get('/departamentos')
   @response(200, {
     description: 'Array of Departamento model instances',
@@ -81,7 +75,7 @@ export class DepartamentoController {
     return this.departamentoRepository.find(filter);
   }
 
-  //@authenticate("Administrador", "Auxiliar")
+  @authenticate("Administrador")
   @patch('/departamentos')
   @response(200, {
     description: 'Departamento PATCH success count',
@@ -101,7 +95,7 @@ export class DepartamentoController {
     return this.departamentoRepository.updateAll(departamento, where);
   }
 
-  //@authenticate("Administrador", "Auxiliar")
+  @authenticate("Administrador")
   @get('/departamentos/{id}')
   @response(200, {
     description: 'Departamento model instance',
@@ -117,8 +111,8 @@ export class DepartamentoController {
   ): Promise<Departamento> {
     return this.departamentoRepository.findById(id, filter);
   }
-  
-  //@authenticate("Administrador", "Auxiliar")
+
+  @authenticate("Administrador")
   @patch('/departamentos/{id}')
   @response(204, {
     description: 'Departamento PATCH success',
@@ -137,7 +131,7 @@ export class DepartamentoController {
     await this.departamentoRepository.updateById(id, departamento);
   }
 
-  //@authenticate("Administrador", "Auxiliar")
+  @authenticate("Administrador")
   @put('/departamentos/{id}')
   @response(204, {
     description: 'Departamento PUT success',
@@ -149,7 +143,7 @@ export class DepartamentoController {
     await this.departamentoRepository.replaceById(id, departamento);
   }
 
-  //@authenticate("Administrador", "Auxiliar")
+  @authenticate("Administrador")
   @del('/departamentos/{id}')
   @response(204, {
     description: 'Departamento DELETE success',
