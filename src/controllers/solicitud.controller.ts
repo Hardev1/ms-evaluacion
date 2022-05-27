@@ -96,7 +96,6 @@ export class SolicitudController {
     return this.solicitudRepository.count(where);
   }
 
-  @authenticate("Administrador", "Auxiliar", "Evaluador")
   @get('/solicitud')
   @response(200, {
     description: 'Array of Solicitud model instances',

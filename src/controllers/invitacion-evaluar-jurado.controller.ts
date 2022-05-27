@@ -1,4 +1,3 @@
-import {authenticate} from '@loopback/authentication';
 import {
   repository
 } from '@loopback/repository';
@@ -12,7 +11,6 @@ import {
 } from '../models';
 import {InvitacionEvaluarRepository} from '../repositories';
 
-@authenticate("Administrador")
 export class InvitacionEvaluarJuradoController {
   constructor(
     @repository(InvitacionEvaluarRepository)
